@@ -18,6 +18,11 @@ func init(){
 }
 ```
 
+### gopkg.in
+
+```go
+import "gopkg.in/hedzr/logex.v1"
+```
 
 
 ## LICENSE
