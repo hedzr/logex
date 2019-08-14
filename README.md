@@ -20,12 +20,27 @@ func init(){
 }
 ```
 
-### gopkg.in
+### import `logex` from gopkg.in:
 
 ```go
 import "gopkg.in/hedzr/logex.v1"
 ```
 
+
+## make `logrus` works in `go test`
+
+The codes is copied from:
+
+https://github.com/sirupsen/logrus/issues/834
+
+And in a test function, you could code now:
+
+```go
+   func TestFoo(t *testing.T) {
+     defer logex.CaptureLog(t).Release()
+     // …
+   }
+```
 
 ## LICENSE
 
