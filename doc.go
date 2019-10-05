@@ -8,9 +8,9 @@ const (
 	// AppName const
 	AppName = "logex" // main app-name
 	// Version const
-	Version = "0.6.1" // version name
+	Version = "1.0.3" // version name
 	// VersionInt const
-	VersionInt = 0x000601 // using as
+	VersionInt = 0x010003 // using as
 )
 
 // func GetApiPrefix() string {
