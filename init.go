@@ -19,6 +19,18 @@ func Enable() {
 	// logrus.AddHook(logex.hook.DefaultContextHook)
 }
 
+func EnableWith(lvl logrus.Level, opts ...LogexOption) {
+	logrus.SetLevel(lvl)
+	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+	logrus.SetReportCaller(true)
+	// logrus.AddHook(logex.hook.DefaultContextHook)
+	for _, opt := range opts {
+		opt()
+	}
+}
+
+type LogexOption func()
+
 // func Enable() {
 // 	var foreground = vxconf.GetBoolR("app.foreground")
 // 	var file = daemon.DefaultLogFile()
