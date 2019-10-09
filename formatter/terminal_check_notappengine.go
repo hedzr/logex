@@ -1,4 +1,4 @@
-// +build !appengine,!js,!windows,!aix
+// +build !appengine,!js,!windows,!aix,!nacl
 
 /*
  * Copyright © 2019 Hedzr Yeh.
