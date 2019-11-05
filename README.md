@@ -20,16 +20,8 @@ import "github.com/hedzr/logex"
 
 func init(){
 	logex.Enable()
-}
-```
-
-Or:
-
-```go
-import "github.com/hedzr/logex"
-
-func init(){
-	logex.EnableWith(logrus.DebugLevel)
+    // Or:
+    logex.EnableWith(logrus.DebugLevel)
 }
 ```
 
@@ -56,6 +48,30 @@ And in a test function, you could code now:
      // …
    }
 ```
+
+### ignore the extra caller frames
+
+If you are writing logging func wrappers, you might ignore the extra caller frames for those wrappers:
+
+```go
+func wrong(err error, fmt string, args interface{}) {
+    logrus.WithError(err).WithFields(logrus.Fields{
+        logex.SKIP: 1,  // ignore wrong() frame
+    }).Errorf(fmt, args)
+}
+
+func wrongInner(err error, fields logrus.Fields, fmt string, args interface{}) {
+    logrus.WithError(err).WithFields(fields).Errorf(fmt, args)
+}
+
+func wrongwrong(err error, fmt string, args interface{}) {
+    wrongInner(err, logrus.Fields{
+        logex.SKIP: 2,  // ignore wrongwrong() and wrongInner() frame
+    }, fmt, args...)
+}
+```
+
+
 
 ## LICENSE
 
