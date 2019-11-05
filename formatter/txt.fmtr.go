@@ -135,6 +135,72 @@ func (f *TextFormatter) isColored() bool {
 	return isColored && !f.DisableColors
 }
 
+var (
+	callerInitOnce     sync.Once
+	logrusPackage      string
+	logexPackage       string
+	minimumCallerDepth int
+)
+
+const (
+	maximumCallerDepth int = 25
+	knownLogrusFrames  int = 4
+)
+
+// getPackageName reduces a fully qualified function name to the package name
+// There really ought to be to be a better way...
+func getPackageName(f string) string {
+	for {
+		lastPeriod := strings.LastIndex(f, ".")
+		lastSlash := strings.LastIndex(f, "/")
+		if lastPeriod > lastSlash {
+			f = f[:lastPeriod]
+		} else {
+			break
+		}
+	}
+
+	return f
+}
+
+// getCaller retrieves the name of the first non-logrus calling function
+func getCaller(skipFrames int) *runtime.Frame {
+
+	// cache this package's fully-qualified name
+	callerInitOnce.Do(func() {
+		pcs := make([]uintptr, 2)
+		_ = runtime.Callers(0, pcs)
+		logexPackage = getPackageName(runtime.FuncForPC(pcs[1]).Name())
+		logrusPackage = "github.com/sirupsen/logrus"
+
+		// now that we have the cache, we can skip a minimum count of known-logrus functions
+		// XXX this is dubious, the number of frames may vary
+		minimumCallerDepth = knownLogrusFrames
+	})
+
+	// Restrict the lookback frames to avoid runaway lookups
+	pcs := make([]uintptr, maximumCallerDepth)
+	depth := runtime.Callers(minimumCallerDepth, pcs)
+	frames := runtime.CallersFrames(pcs[:depth])
+
+	skipped := 0
+	for f, again := frames.Next(); again; f, again = frames.Next() {
+		pkg := getPackageName(f.Function)
+
+		// If the caller isn't part of this package, we're done
+		if pkg != logrusPackage && pkg != logexPackage {
+			if skipped < skipFrames {
+				skipped++
+				continue
+			}
+			return &f
+		}
+	}
+
+	// if we got here, we failed to find the caller's context
+	return nil
+}
+
 // Format renders a single log entry
 func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	data := make(logrus.Fields)
@@ -167,10 +233,29 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			funcVal, fileVal = f.CallerPrettyfier(entry.Caller)
 		} else {
 			funcVal = entry.Caller.Function
-			if f, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
-				fileVal = f.(string)
+			if ff, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
+				fileVal = ff.(string)
 			} else {
-				fileVal = fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
+				fb := false
+				if sf, ok := data["SKIP"]; ok {
+					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {
+						fb = true
+						delete(data, "SKIP")
+						for i, k := range keys {
+							if k == "SKIP" {
+								keys[i] = "via"
+							}
+						}
+						data["via"] = fmt.Sprintf("%s:%d (%v)", entry.Caller.File, entry.Caller.Line, funcVal)
+
+						entryCaller := getCaller(skipFrames)
+						fileVal = fmt.Sprintf("%s:%d", entryCaller.File, entryCaller.Line)
+						// funcVal = entryCaller.Function
+					}
+				}
+				if !fb {
+					fileVal = fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
+				}
 			}
 		}
 	}
