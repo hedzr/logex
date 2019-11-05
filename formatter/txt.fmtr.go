@@ -254,6 +254,7 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 						entryCaller := getCaller(skipFrames)
 						fileVal = fmt.Sprintf("%s:%d", entryCaller.File, entryCaller.Line)
 						// funcVal = entryCaller.Function
+						entry.Caller = entryCaller
 					}
 				}
 				if !fb {
