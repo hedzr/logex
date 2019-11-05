@@ -44,6 +44,8 @@ const (
 	bgHidden       = 8
 
 	darkColor = lightGray
+	
+	SKIP = "SKIP"
 )
 
 var baseTimestamp time.Time
@@ -237,16 +239,17 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 				fileVal = ff.(string)
 			} else {
 				fb := false
-				if sf, ok := data["SKIP"]; ok {
+				if sf, ok := data[SKIP]; ok {
 					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {
 						fb = true
-						delete(data, "SKIP")
+						delete(data, SKIP)
 						for i, k := range keys {
-							if k == "SKIP" {
+							if k == SKIP {
 								keys[i] = "via"
 							}
 						}
-						data["via"] = fmt.Sprintf("%s:%d (%v)", entry.Caller.File, entry.Caller.Line, funcVal)
+						// data["via"] = fmt.Sprintf("%s:%d (%v)", entry.Caller.File, entry.Caller.Line, funcVal)
+						data["via"] = fmt.Sprintf("%v", funcVal)
 
 						entryCaller := getCaller(skipFrames)
 						fileVal = fmt.Sprintf("%s:%d", entryCaller.File, entryCaller.Line)
