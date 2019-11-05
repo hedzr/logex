@@ -31,7 +31,10 @@ func EnableWith(lvl logrus.Level, opts ...LogexOption) {
 
 type LogexOption func()
 
+const SKIP = formatter.SKIP
+
 // func Enable() {
+//
 // 	var foreground = vxconf.GetBoolR("app.foreground")
 // 	var file = daemon.DefaultLogFile()
 // 	var lvl = vxconf.GetStringR("app.logger.level")
