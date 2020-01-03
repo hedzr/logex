@@ -5,7 +5,7 @@
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/hedzr/logex.svg?label=release)](https://github.com/hedzr/logex/releases)
 [![Sourcegraph](https://sourcegraph.com/github.com/hedzr/logex/-/badge.svg)](https://sourcegraph.com/github.com/hedzr/logex?badge)
 
-an enhanced for logrus. `logex` append the context call info to the log.
+an enhanced for [logrus](https://github.com/sirupsen/logrus). `logex` append the context call info to the log.
 
 
 
@@ -75,6 +75,9 @@ And in a test function, you could code now:
 ```
 
 
+## ACK
+
+- [logrus](https://github.com/sirupsen/logrus)
 
 ## LICENSE
 
