@@ -1,10 +1,10 @@
 module github.com/hedzr/logex
 
-go 1.12
+go 1.13
 
-replace github.com/hedzr/cmdr v0.0.0 => ../cmdr
+// replace github.com/hedzr/cmdr => ../cmdr
 
-replace github.com/hedzr/cmdr v0.2.25 => ../cmdr
+// replace github.com/hedzr/cmdr v0.2.25 => ../cmdr
 
 require (
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2
