@@ -44,7 +44,7 @@ const (
 	bgHidden       = 8
 
 	darkColor = lightGray
-	
+
 	SKIP = "SKIP"
 )
 
@@ -107,6 +107,9 @@ type TextFormatter struct {
 	// activated. If any of the returned value is the empty string the
 	// corresponding key will be removed from json fields.
 	CallerPrettyfier func(*runtime.Frame) (function string, file string)
+
+	Skip       int
+	EnableSkip bool
 
 	terminalInitOnce sync.Once
 }
@@ -182,19 +185,19 @@ func getCaller(skipFrames int) *runtime.Frame {
 
 	// Restrict the lookback frames to avoid runaway lookups
 	pcs := make([]uintptr, maximumCallerDepth)
-	depth := runtime.Callers(minimumCallerDepth, pcs)
+	depth := runtime.Callers(minimumCallerDepth+skipFrames, pcs)
 	frames := runtime.CallersFrames(pcs[:depth])
 
-	skipped := 0
+	// skipped := 0
 	for f, again := frames.Next(); again; f, again = frames.Next() {
 		pkg := getPackageName(f.Function)
 
 		// If the caller isn't part of this package, we're done
 		if pkg != logrusPackage && pkg != logexPackage {
-			if skipped < skipFrames {
-				skipped++
-				continue
-			}
+			// if skipped < skipFrames {
+			// 	skipped++
+			// 	continue
+			// }
 			return &f
 		}
 	}
@@ -238,9 +241,18 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			if ff, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
 				fileVal = ff.(string)
 			} else {
-				fb := false
-				if sf, ok := data[SKIP]; ok {
+				var sf interface{}
+				ok, fb := false, false
+				if f.EnableSkip && f.Skip > 0 {
+					sf, ok = f.Skip, true
+				} else if !f.EnableSkip {
+					sf, ok = 1, true
+				} else {
+					sf, ok = data[SKIP]
+				}
+				if ok {
 					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {
+						// println("skipFrames: %v", skipFrames)
 						fb = true
 						delete(data, SKIP)
 						for i, k := range keys {
@@ -257,6 +269,7 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 						entry.Caller = entryCaller
 					}
 				}
+				fmt.Printf("runtime-version: %v, skipFrames: %v. ok: %v, EnableSkip: %v, %v. fb: %v. logexPackage: %v.\n", runtime.Version(), sf, ok, f.EnableSkip, f.Skip, fb, logexPackage)
 				if !fb {
 					fileVal = fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
 				}
