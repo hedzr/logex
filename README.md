@@ -52,13 +52,6 @@ func wrongwrong(err error, fmt string, args interface{}) {
 
 
 
-### import `logex` from gopkg.in:
-
-```go
-import "gopkg.in/hedzr/logex.v1"
-```
-
-
 ## make `logrus` works in `go test`
 
 The codes is copied from:
