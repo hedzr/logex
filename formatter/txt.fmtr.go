@@ -340,7 +340,7 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 	var levelColor int
 	switch entry.Level {
 	case logrus.DebugLevel, logrus.TraceLevel:
-		levelColor = lightGray
+		levelColor = darkGray // lightGray
 	case logrus.WarnLevel:
 		levelColor = yellow
 	case logrus.ErrorLevel, logrus.FatalLevel, logrus.PanicLevel:
@@ -362,13 +362,13 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 	skipFile := false
 
 	if entry.HasCaller() {
-		funcVal := fmt.Sprintf("%s()", entry.Caller.Function)
+		funcVal := fmt.Sprintf("\u001B[%dm%s\u001B[0m()", darkGray, entry.Caller.Function)
 		var fileVal string // fileVal := fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
 		if f, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
 			fileVal = f.(string)
 			skipFile = true
 		} else {
-			fileVal = fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
+			fileVal = fmt.Sprintf("\u001B[%dm%s:%d\u001B[0m", lightBlue, entry.Caller.File, entry.Caller.Line)
 		}
 
 		if f.CallerPrettyfier != nil {
