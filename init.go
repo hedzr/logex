@@ -7,10 +7,11 @@ package logex
 import (
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
+	"io/ioutil"
 )
 
-func GetLevel() logrus.Level {
-	return logrus.GetLevel()
+func GetLevel() Level {
+	return Level(logrus.GetLevel())
 }
 
 func Enable() {
@@ -19,8 +20,13 @@ func Enable() {
 	// logrus.AddHook(logex.hook.DefaultContextHook)
 }
 
-func EnableWith(lvl logrus.Level, opts ...LogexOption) {
-	logrus.SetLevel(lvl)
+func EnableWith(lvl Level, opts ...Option) {
+	if lvl == OffLevel {
+		logrus.SetLevel(logrus.ErrorLevel)
+		logrus.SetOutput(ioutil.Discard)
+	} else {
+		logrus.SetLevel(logrus.Level(lvl))
+	}
 	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
 	logrus.SetReportCaller(true)
 	// logrus.AddHook(logex.hook.DefaultContextHook)
@@ -29,7 +35,32 @@ func EnableWith(lvl logrus.Level, opts ...LogexOption) {
 	}
 }
 
-type LogexOption func()
+func SetupLoggingFormat(format string, logexSkipFrames int) {
+	switch format {
+	case "json":
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			TimestampFormat:  "2006-01-02 15:04:05.000",
+			DisableTimestamp: false,
+			PrettyPrint:      false,
+		})
+	default:
+		e := false
+		if logexSkipFrames > 0 {
+			e = true
+		}
+		logrus.SetFormatter(&formatter.TextFormatter{
+			ForceColors:               true,
+			DisableColors:             false,
+			FullTimestamp:             true,
+			TimestampFormat:           "2006-01-02 15:04:05.000",
+			Skip:                      logexSkipFrames,
+			EnableSkip:                e,
+			EnvironmentOverrideColors: true,
+		})
+	}
+}
+
+type Option func()
 
 const SKIP = formatter.SKIP
 
