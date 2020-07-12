@@ -63,3 +63,13 @@ main
 
 # some
 internal/
+
+# dep files
+deptool
+g.dot
+g.png
+vendor
+Gopkg.lock
+Gopkg.toml
+# depth files
+*.tree.txt
