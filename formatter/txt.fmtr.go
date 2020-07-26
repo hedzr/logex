@@ -185,19 +185,19 @@ func getCaller(skipFrames int) *runtime.Frame {
 
 	// Restrict the lookback frames to avoid runaway lookups
 	pcs := make([]uintptr, maximumCallerDepth)
-	depth := runtime.Callers(minimumCallerDepth+skipFrames, pcs)
+	depth := runtime.Callers(minimumCallerDepth /*+skipFrames*/, pcs)
 	frames := runtime.CallersFrames(pcs[:depth])
 
-	// skipped := 0
+	skipped := 0
 	for f, again := frames.Next(); again; f, again = frames.Next() {
 		pkg := getPackageName(f.Function)
 
 		// If the caller isn't part of this package, we're done
 		if pkg != logrusPackage && pkg != logexPackage {
-			// if skipped < skipFrames {
-			// 	skipped++
-			// 	continue
-			// }
+			if skipped < skipFrames {
+				skipped++
+				continue
+			}
 			return &f
 		}
 	}
