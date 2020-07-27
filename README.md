@@ -56,12 +56,11 @@ func wrongwrong(err error, fmt string, args interface{}) {
 
 ## Updates
 
-We provides the ability to switch logging backends transparently now.
+We provide the ability to switch logging backends transparently now.
 
 A sample config file looks like:
 
 ```yaml
-
 app:
 
   # runmode: devel  # devel, prod
@@ -75,7 +74,6 @@ app:
     backend: sugar                # zap, sugar(sugared-zap) or logrus
     target: file                  # console, file
     directory: /var/log/$APPNAME
-
 ```
 
 Load it to Config structure:
@@ -89,6 +87,7 @@ And build the backend:
 
 ```go
 logger := build.New(config)
+logger.Debugf("int value = %v", intVal)
 ```
 
 
