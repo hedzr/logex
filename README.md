@@ -7,6 +7,10 @@
 
 an enhanced for [logrus](https://github.com/sirupsen/logrus). `logex` append the context call info to the log.
 
+Since v1.2.0, `logex` allows switching the logging backend transparently.
+
+> v1.2.0 is a pre-release version.
+
 
 
 ![image-20190706194022859](assets/image-20190706194022859.png)
@@ -19,7 +23,7 @@ an enhanced for [logrus](https://github.com/sirupsen/logrus). `logex` append the
 import "github.com/hedzr/logex"
 
 func init(){
-	logex.Enable()
+	  logex.Enable()
     // Or:
     logex.EnableWith(logrus.DebugLevel)
 }
@@ -50,7 +54,50 @@ func wrongwrong(err error, fmt string, args interface{}) {
 
 
 
+## Updates
 
+We provides the ability to switch logging backends transparently now.
+
+A sample config file looks like:
+
+```yaml
+
+app:
+
+  # runmode: devel  # devel, prod
+
+  logger:
+    # The field 'level' will be reset to "debug" while the app is started up within a debugger
+    # available values are:
+    #   "disable"/"off", "panic", "fatal", "error", "warn", "info", "debug", "trace"
+    level:  info
+    format: text                  # text, json, logfmt, ...
+    backend: sugar                # zap, sugar(sugared-zap) or logrus
+    target: file                  # console, file
+    directory: /var/log/$APPNAME
+
+```
+
+Load it to Config structure:
+
+```go
+var config *logex.LoggerConfig
+// ...
+```
+
+And build the backend:
+
+```go
+logger := build.New(config)
+```
+
+
+
+
+
+
+
+## For `go test`
 
 ## make `logrus` works in `go test`
 
@@ -66,6 +113,9 @@ And in a test function, you could code now:
      // …
    }
 ```
+
+
+
 
 
 ## ACK
