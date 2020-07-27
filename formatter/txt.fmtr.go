@@ -245,10 +245,10 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 				ok, fb := false, false
 				if f.EnableSkip && f.Skip > 0 {
 					sf, ok = f.Skip, true
-				} else if !f.EnableSkip {
-					sf, ok = 1, true
-				} else {
-					sf, ok = data[SKIP]
+					// } else if !f.EnableSkip {
+					//	 sf, ok = 1, true
+				} else if v, yes := data[SKIP]; yes {
+					sf, ok = v, yes
 				}
 				if ok {
 					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {
