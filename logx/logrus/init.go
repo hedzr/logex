@@ -2,8 +2,8 @@ package logrus
 
 import (
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/exec"
 	"github.com/hedzr/logex"
-	"github.com/hedzr/logex/exec"
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"

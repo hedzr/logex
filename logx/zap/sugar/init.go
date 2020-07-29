@@ -2,8 +2,8 @@ package sugar
 
 import (
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/exec"
 	"github.com/hedzr/logex"
-	"github.com/hedzr/logex/exec"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"

@@ -3,8 +3,8 @@
 package logex
 
 import (
-	"github.com/hedzr/logex/isdelve"
-	"github.com/hedzr/logex/trace"
+	"github.com/hedzr/log/isdelve"
+	"github.com/hedzr/log/trace"
 )
 
 type CmdrMinimal interface {
