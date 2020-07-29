@@ -1,7 +1,8 @@
 # logex
 
 
-<!-- ![Build Status](https://travis-ci.org/hedzr/logex.svg?branch=master)](https://travis-ci.org/hedzr/logex) -->
+<!-- ![Build Status](https://travis-ci.org/hedzr/logex.svg?branch=master)](https://travis-ci.org/hedzr/logex) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
+-->
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/hedzr/logex.svg?label=release)](https://github.com/hedzr/logex/releases)
 [![Sourcegraph](https://sourcegraph.com/github.com/hedzr/logex/-/badge.svg)](https://sourcegraph.com/github.com/hedzr/logex?badge)
 
@@ -125,3 +126,6 @@ And in a test function, you could code now:
 ## LICENSE
 
 MIT
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_large)
