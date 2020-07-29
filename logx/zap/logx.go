@@ -2,7 +2,6 @@ package zap
 
 import (
 	"github.com/hedzr/log"
-	"github.com/hedzr/logex"
 	"go.uber.org/zap"
 )
 
@@ -12,13 +11,13 @@ type dzl struct {
 }
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		s.sugar.Debugf(msg, args...)
 	}
 }
 
 func (s *dzl) Debugf(msg string, args ...interface{}) {
-	if logex.GetDebugMode() {
+	if log.GetDebugMode() {
 		s.sugar.Debugf(msg, args...)
 	}
 }
@@ -47,13 +46,13 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 //
 
 func (s *dzl) Trace(args ...interface{}) {
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		//s.Logger.Debug("", args...)
 	}
 }
 
 func (s *dzl) Debug(args ...interface{}) {
-	if logex.GetDebugMode() {
+	if log.GetDebugMode() {
 		//s.Logger.Debugw(msg, fields...)
 	}
 }

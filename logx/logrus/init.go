@@ -16,17 +16,17 @@ import (
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
 //
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
-	logex.SetTraceMode(traceMode)
-	logex.SetDebugMode(debugMode)
+	log.SetTraceMode(traceMode)
+	log.SetDebugMode(debugMode)
 	// ll := cmdr.GetStringR("logger.level", "info")
 	lvl, _ := log.ParseLevel(level)
-	if logex.GetDebugMode() {
+	if log.GetDebugMode() {
 		if lvl < log.DebugLevel {
 			lvl = log.DebugLevel
 			level = "debug"
 		}
 	}
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		if lvl < log.TraceLevel {
 			lvl = log.TraceLevel
 			level = "trace"
@@ -45,17 +45,17 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 }
 
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
-	logex.SetTraceMode(config.TraceMode)
-	logex.SetDebugMode(config.DebugMode)
+	log.SetTraceMode(config.TraceMode)
+	log.SetDebugMode(config.DebugMode)
 	// ll := cmdr.GetStringR("logger.level", "info")
 	lvl, _ := log.ParseLevel(config.Level)
-	if logex.GetDebugMode() {
+	if log.GetDebugMode() {
 		if lvl < log.DebugLevel {
 			lvl = log.DebugLevel
 			config.Level = "debug"
 		}
 	}
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		if lvl < log.TraceLevel {
 			lvl = log.TraceLevel
 			config.Level = "trace"

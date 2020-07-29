@@ -2,7 +2,6 @@ package logrus
 
 import (
 	"github.com/hedzr/log"
-	"github.com/hedzr/logex"
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,7 +10,7 @@ type dzl struct {
 }
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		s.Logger.Tracef(msg, args...)
 	}
 }
@@ -44,7 +43,7 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 //
 
 func (s *dzl) Trace(args ...interface{}) {
-	if logex.GetTraceMode() {
+	if log.GetTraceMode() {
 		//s.Logger.Debugw(msg, fields...)
 	}
 }

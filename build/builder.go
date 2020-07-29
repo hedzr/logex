@@ -33,5 +33,8 @@ func New(config *log.LoggerConfig) log.Logger {
 }
 
 func NewLoggerConfig() *log.LoggerConfig {
-	return log.NewLoggerConfig()
+	c := log.NewLoggerConfig()
+	//c.DebugMode = log.GetDebugMode()
+	//c.TraceMode = log.GetTraceMode()
+	return c
 }
