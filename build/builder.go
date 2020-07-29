@@ -17,6 +17,10 @@ func New(config *log.LoggerConfig) log.Logger {
 
 	var logger log.Logger
 	switch config.Backend {
+	case "dummy", "none", "off":
+		logger = log.NewDummyLogger()
+	case "std", "standard":
+		logger = log.NewStdLogger()
 	case "logrus":
 		logger = logrus.NewWithConfig(config)
 	case "sugar":
