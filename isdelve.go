@@ -2,34 +2,19 @@
 
 package logex
 
-import (
-	"github.com/hedzr/log/isdelve"
-	"github.com/hedzr/log/trace"
-)
+import "github.com/hedzr/log"
 
-type CmdrMinimal interface {
-	InDebugging() bool
-	GetDebugMode() bool
-	GetTraceMode() bool
-	SetDebugMode(b bool)
-	SetTraceMode(b bool)
-}
+// InDebugging check if the delve debugger presents
+func InDebugging() bool { return log.InDebugging() }
 
-func InDebugging() bool   { return env.InDebugging() }
-func GetDebugMode() bool  { return env.GetDebugMode() }
-func GetTraceMode() bool  { return env.GetTraceMode() }
-func SetDebugMode(b bool) { env.SetDebugMode(b) }
-func SetTraceMode(b bool) { env.SetTraceMode(b) }
+// GetDebugMode return the debug boolean flag generally
+func GetDebugMode() bool { return log.GetDebugMode() }
 
-type Env struct {
-	debugMode bool
-	traceMode bool
-}
+// GetTraceMode return the trace boolean flag generally
+func GetTraceMode() bool { return log.GetTraceMode() }
 
-func (e *Env) InDebugging() bool   { return isdelve.Enabled }
-func (e *Env) GetDebugMode() bool  { return e.debugMode || isdelve.Enabled }
-func (e *Env) GetTraceMode() bool  { return e.traceMode || trace.IsEnabled() }
-func (e *Env) SetDebugMode(b bool) { e.debugMode = b }
-func (e *Env) SetTraceMode(b bool) { e.traceMode = b }
+// SetDebugMode set the debug boolean flag generally
+func SetDebugMode(b bool) { log.SetDebugMode(b) }
 
-var env = &Env{}
+// SetTraceMode set the trace boolean flag generally
+func SetTraceMode(b bool) { log.SetTraceMode(b) }
