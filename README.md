@@ -23,7 +23,7 @@ Since v1.2.0, `logex` allows switching the logging backend transparently.
 import "github.com/hedzr/logex"
 
 func init(){
-	  logex.Enable()
+    logex.Enable()
     // Or:
     logex.EnableWith(logrus.DebugLevel)
 }
@@ -79,7 +79,8 @@ app:
 Load it to Config structure:
 
 ```go
-var config *logex.LoggerConfig
+import "github.com/hedzr/log"
+var config *log.LoggerConfig = log.NewLoggerConfig()
 // ...
 ```
 
