@@ -5,13 +5,14 @@
 package logex
 
 import (
+	"github.com/hedzr/log"
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 )
 
-func GetLevel() Level {
+func GetLevel() log.Level {
 	return level
 }
 
@@ -21,9 +22,9 @@ func Enable() {
 	// logrus.AddHook(logex.hook.DefaultContextHook)
 }
 
-func EnableWith(lvl Level, opts ...Option) {
+func EnableWith(lvl log.Level, opts ...Option) {
 	level = lvl
-	if lvl == OffLevel {
+	if lvl == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
 	} else {
@@ -61,7 +62,7 @@ func SetupLoggingFormat(format string, logexSkipFrames int) {
 			EnvironmentOverrideColors: true,
 		})
 	}
-	if level == OffLevel {
+	if level == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
 	}
@@ -71,7 +72,7 @@ type Option func()
 
 const SKIP = formatter.SKIP
 
-var level Level
+var level log.Level
 
 // func Enable() {
 //

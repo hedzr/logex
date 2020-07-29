@@ -1,6 +1,7 @@
 package logrus
 
 import (
+	"github.com/hedzr/log"
 	"github.com/hedzr/logex"
 	"github.com/hedzr/logex/exec"
 	"github.com/hedzr/logex/formatter"
@@ -14,60 +15,60 @@ import (
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
 //
-func New(level string, traceMode, debugMode bool, opts ...Opt) logex.Logger {
+func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	logex.SetTraceMode(traceMode)
 	logex.SetDebugMode(debugMode)
 	// ll := cmdr.GetStringR("logger.level", "info")
-	lvl, _ := logex.ParseLevel(level)
+	lvl, _ := log.ParseLevel(level)
 	if logex.GetDebugMode() {
-		if lvl < logex.DebugLevel {
-			lvl = logex.DebugLevel
+		if lvl < log.DebugLevel {
+			lvl = log.DebugLevel
 			level = "debug"
 		}
 	}
 	if logex.GetTraceMode() {
-		if lvl < logex.TraceLevel {
-			lvl = logex.TraceLevel
+		if lvl < log.TraceLevel {
+			lvl = log.TraceLevel
 			level = "trace"
 		}
 	}
 
-	log := initLogger(logex.NewLoggerConfig())
+	zl := initLogger(log.NewLoggerConfig())
 
 	for _, opt := range opts {
-		opt(log)
+		opt(zl)
 	}
 
-	logger := &dzl{log}
+	logger := &dzl{zl}
 	logger.Setup()
 	return logger
 }
 
-func NewWithConfig(config *logex.LoggerConfig, opts ...Opt) logex.Logger {
+func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	logex.SetTraceMode(config.TraceMode)
 	logex.SetDebugMode(config.DebugMode)
 	// ll := cmdr.GetStringR("logger.level", "info")
-	lvl, _ := logex.ParseLevel(config.Level)
+	lvl, _ := log.ParseLevel(config.Level)
 	if logex.GetDebugMode() {
-		if lvl < logex.DebugLevel {
-			lvl = logex.DebugLevel
+		if lvl < log.DebugLevel {
+			lvl = log.DebugLevel
 			config.Level = "debug"
 		}
 	}
 	if logex.GetTraceMode() {
-		if lvl < logex.TraceLevel {
-			lvl = logex.TraceLevel
+		if lvl < log.TraceLevel {
+			lvl = log.TraceLevel
 			config.Level = "trace"
 		}
 	}
 
-	log := initLogger(config)
+	zl := initLogger(config)
 
 	for _, opt := range opts {
-		opt(log)
+		opt(zl)
 	}
 
-	logger := &dzl{log}
+	logger := &dzl{zl}
 	logger.Setup()
 	return logger
 }
@@ -80,10 +81,10 @@ func WithLoggingFormat(format string) Opt {
 	}
 }
 
-func initLogger(config *logex.LoggerConfig) *logrus.Logger {
-	var ll logex.Level
-	ll, _ = logex.ParseLevel(config.Level)
-	if ll == logex.OffLevel {
+func initLogger(config *log.LoggerConfig) *logrus.Logger {
+	var ll log.Level
+	ll, _ = log.ParseLevel(config.Level)
+	if ll == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
 		return logrus.New()

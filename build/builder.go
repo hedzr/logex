@@ -3,29 +3,31 @@
 package build
 
 import (
+	"github.com/hedzr/log"
 	"github.com/hedzr/logex"
 	"github.com/hedzr/logex/logx/logrus"
 	"github.com/hedzr/logex/logx/zap"
 	"github.com/hedzr/logex/logx/zap/sugar"
 )
 
-func New(config *logex.LoggerConfig) logex.Logger {
-	if logex.GetLevel() == logex.OffLevel {
-		return &dummyLogger{}
+func New(config *log.LoggerConfig) log.Logger {
+	if logex.GetLevel() == log.OffLevel {
+		return log.NewDummyLogger()
 	}
 
-	var logger logex.Logger
+	var logger log.Logger
 	switch config.Backend {
 	case "logrus":
 		logger = logrus.NewWithConfig(config)
 	case "sugar":
 		logger = sugar.NewWithConfig(config)
 	default:
-		logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
+		logger = zap.NewWithConfig(config)
+		//logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
 	}
 	return logger
 }
 
-func NewLoggerConfig() *logex.LoggerConfig {
-	return logex.NewLoggerConfig()
+func NewLoggerConfig() *log.LoggerConfig {
+	return log.NewLoggerConfig()
 }

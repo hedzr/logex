@@ -1,6 +1,7 @@
 package sugar
 
 import (
+	"github.com/hedzr/log"
 	"github.com/hedzr/logex"
 	"go.uber.org/zap"
 )
@@ -79,13 +80,13 @@ func (s *dzl) Print(args ...zap.Field) {
 //
 //
 
-func (s *dzl) SetLevel(lvl logex.Level) {
+func (s *dzl) SetLevel(lvl log.Level) {
 	//panic("implement me")
 }
 
-func (s *dzl) GetLevel() logex.Level {
+func (s *dzl) GetLevel() log.Level {
 	//panic("implement me")
-	return logex.DebugLevel
+	return log.DebugLevel
 }
 
 func (s *dzl) Setup() {
@@ -96,7 +97,7 @@ func (s *dzl) Setup() {
 //	return s
 //}
 
-func AsFieldLogger(s logex.Logger) FieldLogger {
+func AsFieldLogger(s log.Logger) FieldLogger {
 	if l, ok := s.(FieldLogger); ok {
 		return l
 	}
@@ -104,7 +105,7 @@ func AsFieldLogger(s logex.Logger) FieldLogger {
 }
 
 type FieldLogger interface {
-	logex.Logger
+	log.Logger
 	Trace(args ...zap.Field)
 	Debug(args ...zap.Field)
 	Info(args ...zap.Field)

@@ -2,11 +2,10 @@ module github.com/hedzr/logex
 
 go 1.13
 
-// replace github.com/hedzr/cmdr => ../cmdr
-
-// replace github.com/hedzr/cmdr v0.2.25 => ../cmdr
+// replace github.com/hedzr/log => ../log
 
 require (
+	github.com/hedzr/log v0.1.7
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3
 	github.com/sirupsen/logrus v1.6.0
 	go.uber.org/zap v1.15.0
