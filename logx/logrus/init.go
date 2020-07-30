@@ -1,6 +1,7 @@
 package logrus
 
 import (
+	"fmt"
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/exec"
 	"github.com/hedzr/logex"
@@ -100,15 +101,28 @@ func initLogger(config *log.LoggerConfig) *logrus.Logger {
 		var file *os.File
 		fPath := path.Join(os.ExpandEnv(config.Directory), "output.log")
 		fDir := path.Dir(fPath)
-		if err = exec.EnsureDirEnh(fDir); err == nil {
-			file, err = os.OpenFile(fPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+		err = exec.EnsureDir(fDir)
+		if err != nil {
+			fmt.Printf(`
+
+You're been prompt with a "sudo" requesting because this folder was been creating but need more privileges:
+
+- %v
+
+We must have created the logging output file in it.
+
+`, fDir)
+			err = exec.EnsureDirEnh(fDir)
 		}
+
 		if err == nil {
-			logrus.SetOutput(file)
-			return logrus.StandardLogger()
-		} else {
-			logrus.Warnf("Failed to log to file %q, using default stderr", fPath)
+			if file, err = os.OpenFile(fPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660); err == nil {
+				logrus.SetOutput(file)
+				return logrus.StandardLogger()
+			}
 		}
+
+		logrus.Warnf("Failed to log to file %q, using default stderr", fPath)
 	}
 
 	// setupLoggingFormat(format, 0)

@@ -1,6 +1,7 @@
 package zap
 
 import (
+	"fmt"
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/exec"
 	"go.uber.org/zap"
@@ -88,7 +89,21 @@ func initLogger(config *log.LoggerConfig) *zap.Logger {
 
 		fPath := path.Join(os.ExpandEnv(config.Directory), "output.log")
 		fDir := path.Dir(fPath)
-		if err := exec.EnsureDirEnh(fDir); err != nil {
+		err := exec.EnsureDir(fDir)
+		if err != nil {
+			fmt.Printf(`
+
+You're been prompt with a "sudo" requesting because this folder was been creating but need more privileges:
+
+- %v
+
+We must have created the logging output file in it.
+
+`, fDir)
+			err = exec.EnsureDirEnh(fDir)
+		}
+
+		if err != nil {
 			log2.Printf("cannot create logging dir %q, error: %v", fDir, err)
 			return nil
 		}
