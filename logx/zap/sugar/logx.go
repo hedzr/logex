@@ -37,6 +37,10 @@ func (s *dzl) Fatalf(msg string, args ...interface{}) {
 	s.Logger.Fatalf(msg, args...)
 }
 
+func (s *dzl) Panicf(msg string, args ...interface{}) {
+	s.Logger.Panicf(msg, args...)
+}
+
 func (s *dzl) Printf(msg string, args ...interface{}) {
 	s.Logger.Infof(msg, args...)
 }

@@ -38,6 +38,10 @@ func (s *dzl) Fatalf(msg string, args ...interface{}) {
 	s.sugar.Fatalf(msg, args...)
 }
 
+func (s *dzl) Panicf(msg string, args ...interface{}) {
+	s.sugar.Panicf(msg, args...)
+}
+
 func (s *dzl) Printf(msg string, args ...interface{}) {
 	s.sugar.Infof(msg, args...)
 }

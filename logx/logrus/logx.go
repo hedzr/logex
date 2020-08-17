@@ -35,6 +35,10 @@ func (s *dzl) Fatalf(msg string, args ...interface{}) {
 	s.Logger.Fatalf(msg, args...)
 }
 
+func (s *dzl) Panicf(msg string, args ...interface{}) {
+	s.Logger.Panicf(msg, args...)
+}
+
 func (s *dzl) Printf(msg string, args ...interface{}) {
 	s.Logger.Infof(msg, args...)
 }
@@ -44,32 +48,32 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 
 func (s *dzl) Trace(args ...interface{}) {
 	if log.GetTraceMode() {
-		//s.Logger.Debugw(msg, fields...)
+		s.Logger.Trace(args...)
 	}
 }
 
 func (s *dzl) Debug(args ...interface{}) {
-	//s.Logger.Debugw(msg, fields...)
+	s.Logger.Debug(args...)
 }
 
 func (s *dzl) Info(args ...interface{}) {
-	//s.Logger.Infow(msg, fields...)
+	s.Logger.Info(args...)
 }
 
 func (s *dzl) Warn(args ...interface{}) {
-	//s.Logger.Warnw(msg, fields...)
+	s.Logger.Warn(args...)
 }
 
 func (s *dzl) Error(args ...interface{}) {
-	//s.Logger.Errorw(msg, fields...)
+	s.Logger.Error(args...)
 }
 
 func (s *dzl) Fatal(args ...interface{}) {
-	//s.Logger.Fatalw(msg, fields...)
+	s.Logger.Fatal(args...)
 }
 
 func (s *dzl) Print(args ...interface{}) {
-	//s.Logger.Infow(msg, fields...)
+	s.Logger.Print(args...)
 }
 
 //
