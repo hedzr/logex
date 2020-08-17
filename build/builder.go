@@ -10,6 +10,7 @@ import (
 	"github.com/hedzr/logex/logx/zap/sugar"
 )
 
+// New creates and returns a Logger instance from LoggerConfig
 func New(config *log.LoggerConfig) log.Logger {
 	if logex.GetLevel() == log.OffLevel {
 		return log.NewDummyLogger()
@@ -32,9 +33,16 @@ func New(config *log.LoggerConfig) log.Logger {
 	return logger
 }
 
+// NewLoggerConfig returns a default LoggerConfig
 func NewLoggerConfig() *log.LoggerConfig {
 	c := log.NewLoggerConfig()
 	//c.DebugMode = log.GetDebugMode()
 	//c.TraceMode = log.GetTraceMode()
+	return c
+}
+
+// NewLoggerConfigWith returns a default LoggerConfig
+func NewLoggerConfigWith(enabled bool, backend, level string) *log.LoggerConfig {
+	c := log.NewLoggerConfigWith(enabled, backend, level)
 	return c
 }
