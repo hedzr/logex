@@ -1,16 +1,17 @@
 # logex
 
-
-<!-- ![Build Status](https://travis-ci.org/hedzr/logex.svg?branch=master)](https://travis-ci.org/hedzr/logex) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
--->
+![Go](https://github.com/hedzr/logex/workflows/Go/badge.svg)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/hedzr/logex.svg?label=release)](https://github.com/hedzr/logex/releases)
 [![Sourcegraph](https://sourcegraph.com/github.com/hedzr/logex/-/badge.svg)](https://sourcegraph.com/github.com/hedzr/logex?badge)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/hedzr/logex)
+[![go.dev](https://img.shields.io/badge/go.dev-reference-green)](https://pkg.go.dev/github.com/hedzr/logex)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hedzr/logex)](https://goreportcard.com/report/github.com/hedzr/logex)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
+
 
 an enhanced for [logrus](https://github.com/sirupsen/logrus). `logex` append the context call info to the log.
 
 Since v1.2.0, `logex` allows switching the logging backend transparently.
-
-> v1.2.0 is a pre-release version.
 
 
 
@@ -20,42 +21,9 @@ Since v1.2.0, `logex` allows switching the logging backend transparently.
 
 ## Usage
 
-```go
-import "github.com/hedzr/logex"
-
-func init(){
-    logex.Enable()
-    // Or:
-    logex.EnableWith(logrus.DebugLevel)
-}
-```
 
 
-### ignore the extra caller frames
-
-If you are writing logging func wrappers, you might ignore the extra caller frames for those wrappers:
-
-```go
-func wrong(err error, fmt string, args interface{}) {
-    logrus.WithError(err).WithFields(logrus.Fields{
-        logex.SKIP: 1,  // ignore wrong() frame
-    }).Errorf(fmt, args)
-}
-
-func wrongInner(err error, fields logrus.Fields, fmt string, args interface{}) {
-    logrus.WithError(err).WithFields(fields).Errorf(fmt, args)
-}
-
-func wrongwrong(err error, fmt string, args interface{}) {
-    wrongInner(err, logrus.Fields{
-        logex.SKIP: 2,  // ignore wrongwrong() and wrongInner() frame
-    }, fmt, args...)
-}
-```
-
-
-
-## Updates
+### Build logger transparently
 
 We provide the ability to switch logging backends transparently now.
 
@@ -88,11 +56,65 @@ var config *log.LoggerConfig = log.NewLoggerConfig()
 And build the backend:
 
 ```go
+import "github.com/hedzr/logex/build"
 logger := build.New(config)
 logger.Debugf("int value = %v", intVal)
 ```
 
+#### Or build a logger backend directly
 
+```go
+import "github.com/hedzr/logex/logx/logrus"
+logrus.New(level string, traceMode, debugMode bool, opts ...Opt)
+
+import "github.com/hedzr/logex/logx/zap"
+zap.New(level string, traceMode, debugMode bool, opts ...Opt)
+
+import "github.com/hedzr/logex/logx/zap/sugar"
+sugar.New(level string, traceMode, debugMode bool, opts ...Opt)
+
+```
+
+
+
+
+
+### Legacy tools
+
+#### Enable logrus
+
+```go
+import "github.com/hedzr/logex"
+
+func init(){
+    logex.Enable()
+    // Or:
+    logex.EnableWith(logrus.DebugLevel)
+}
+```
+
+
+#### Ignore the extra caller frames
+
+If you are writing logging func wrappers, you might ignore the extra caller frames for those wrappers:
+
+```go
+func wrong(err error, fmt string, args interface{}) {
+    logrus.WithError(err).WithFields(logrus.Fields{
+        logex.SKIP: 1,  // ignore wrong() frame
+    }).Errorf(fmt, args)
+}
+
+func wrongInner(err error, fields logrus.Fields, fmt string, args interface{}) {
+    logrus.WithError(err).WithFields(fields).Errorf(fmt, args)
+}
+
+func wrongwrong(err error, fmt string, args interface{}) {
+    wrongInner(err, logrus.Fields{
+        logex.SKIP: 2,  // ignore wrongwrong() and wrongInner() frame
+    }, fmt, args...)
+}
+```
 
 
 
