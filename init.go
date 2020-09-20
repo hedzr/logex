@@ -13,7 +13,7 @@ import (
 )
 
 func GetLevel() log.Level {
-	return level
+	return log.GetLevel()
 }
 
 func Enable() {
@@ -23,7 +23,6 @@ func Enable() {
 }
 
 func EnableWith(lvl log.Level, opts ...Option) {
-	level = lvl
 	if lvl == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
@@ -31,6 +30,7 @@ func EnableWith(lvl log.Level, opts ...Option) {
 		logrus.SetLevel(logrus.Level(lvl))
 		logrus.SetOutput(os.Stdout)
 	}
+	log.SetLevel(lvl)
 	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
 	logrus.SetReportCaller(true)
 	// logrus.AddHook(logex.hook.DefaultContextHook)
@@ -62,7 +62,7 @@ func SetupLoggingFormat(format string, logexSkipFrames int) {
 			EnvironmentOverrideColors: true,
 		})
 	}
-	if level == log.OffLevel {
+	if GetLevel() == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
 	}
@@ -72,7 +72,7 @@ type Option func()
 
 const SKIP = formatter.SKIP
 
-var level log.Level
+// var level log.Level
 
 // func Enable() {
 //
