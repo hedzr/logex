@@ -6,6 +6,8 @@
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/hedzr/logex)
 [![go.dev](https://img.shields.io/badge/go.dev-reference-green)](https://pkg.go.dev/github.com/hedzr/logex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hedzr/logex)](https://goreportcard.com/report/github.com/hedzr/logex)
+[![Coverage Status](https://coveralls.io/repos/github/hedzr/loexg/badge.svg)](https://coveralls.io/github/hedzr/logex) <!--
+ [![codecov](https://codecov.io/gh/hedzr/logex/branch/master/graph/badge.svg)](https://codecov.io/gh/hedzr/logex) --> 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
 
 
@@ -15,7 +17,15 @@ Since v1.2.0, `logex` allows switching the logging backend transparently.
 
 
 
-![image-20190706194022859](assets/image-20190706194022859.png)
+![image-20200927083958978](https://i.loli.net/2020/09/27/LYlAcGUOa3CIeR7.png)
+
+
+
+## Features
+
+- Pre-setup logging backends with clickeable caller info: logrus or zap
+- Generic logging interface to cover the various logging backends via: [`log.Logger`](https://github.com/hedzr/log/blob/master/logger.go#L10), [`build.New(config)`](https://github.com/hedzr/logex/blob/master/build/builder.go#L14)
+- 
 
 
 
