@@ -6,7 +6,7 @@
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/hedzr/logex)
 [![go.dev](https://img.shields.io/badge/go.dev-reference-green)](https://pkg.go.dev/github.com/hedzr/logex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hedzr/logex)](https://goreportcard.com/report/github.com/hedzr/logex)
-[![Coverage Status](https://coveralls.io/repos/github/hedzr/loexg/badge.svg)](https://coveralls.io/github/hedzr/logex) <!--
+[![Coverage Status](https://coveralls.io/repos/github/hedzr/logex/badge.svg?branch=master)](https://coveralls.io/github/hedzr/logex?branch=master) <!--
  [![codecov](https://codecov.io/gh/hedzr/logex/branch/master/graph/badge.svg)](https://codecov.io/gh/hedzr/logex) --> 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
 
