@@ -3,6 +3,7 @@ package zap
 import (
 	"github.com/hedzr/log"
 	"go.uber.org/zap"
+	"io"
 )
 
 type dzl struct {
@@ -91,6 +92,14 @@ func (s *dzl) SetLevel(lvl log.Level) {
 func (s *dzl) GetLevel() log.Level {
 	// panic("implement me")
 	return log.DebugLevel
+}
+
+func (s *dzl) SetOutput(out io.Writer) {
+	// s.Logger.Out = out
+}
+
+func (s *dzl) GetOutput() (out io.Writer) {
+	return
 }
 
 func (s *dzl) Setup() {

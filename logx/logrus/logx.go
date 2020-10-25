@@ -3,10 +3,12 @@ package logrus
 import (
 	"github.com/hedzr/log"
 	"github.com/sirupsen/logrus"
+	"io"
 )
 
 type dzl struct {
 	*logrus.Logger
+	Config *log.LoggerConfig
 }
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
@@ -85,6 +87,14 @@ func (s *dzl) SetLevel(lvl log.Level) {
 
 func (s *dzl) GetLevel() log.Level {
 	return log.Level(s.Logger.Level)
+}
+
+func (s *dzl) SetOutput(out io.Writer) {
+	s.Logger.Out = out
+}
+
+func (s *dzl) GetOutput() (out io.Writer) {
+	return s.Logger.Out
 }
 
 func (s *dzl) Setup() {
