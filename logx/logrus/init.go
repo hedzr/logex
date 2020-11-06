@@ -43,6 +43,7 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 
 	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
+	log.SetLogger(logger)
 	return logger
 }
 
@@ -72,6 +73,7 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
+	log.SetLogger(logger)
 	return logger
 }
 

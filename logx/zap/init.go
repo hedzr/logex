@@ -42,6 +42,7 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 
 	logger := &dzl{zl, zl.Sugar()}
 	logger.Setup()
+	log.SetLogger(logger)
 	return logger
 }
 
@@ -75,6 +76,7 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 	logger := &dzl{zl, zl.Sugar()}
 	logger.Setup()
+	log.SetLogger(logger)
 	return logger
 }
 
