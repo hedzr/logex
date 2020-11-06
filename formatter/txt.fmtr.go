@@ -144,6 +144,7 @@ var (
 	callerInitOnce     sync.Once
 	logrusPackage      string
 	logexPackage       string
+	logPackage         string
 	minimumCallerDepth int
 )
 
@@ -175,6 +176,7 @@ func getCaller(skipFrames int) *runtime.Frame {
 	callerInitOnce.Do(func() {
 		pcs := make([]uintptr, 2)
 		_ = runtime.Callers(0, pcs)
+		logPackage = "github.com/hedzr/log"
 		logexPackage = getPackageName(runtime.FuncForPC(pcs[1]).Name())
 		logrusPackage = "github.com/sirupsen/logrus"
 
@@ -193,7 +195,7 @@ func getCaller(skipFrames int) *runtime.Frame {
 		pkg := getPackageName(f.Function)
 
 		// If the caller isn't part of this package, we're done
-		if pkg != logrusPackage && pkg != logexPackage {
+		if pkg != logrusPackage && pkg != logexPackage && pkg != logPackage {
 			if skipped < skipFrames {
 				skipped++
 				continue
@@ -247,8 +249,9 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 					sf, ok = f.Skip, true
 					// } else if !f.EnableSkip {
 					//	 sf, ok = 1, true
-				} else if v, yes := data[SKIP]; yes {
-					sf, ok = v, yes
+				}
+				if v, yes := data[SKIP]; yes {
+					sf, ok = sf.(int)+v.(int), yes
 				}
 				if ok {
 					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {

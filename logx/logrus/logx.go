@@ -6,9 +6,71 @@ import (
 	"io"
 )
 
+type entry struct {
+	*logrus.Entry
+}
+
+func (s *entry) SetLevel(lvl log.Level)     { s.Logger.SetLevel(logrus.Level(lvl)) }
+func (s *entry) GetLevel() log.Level        { return log.Level(s.Logger.Level) }
+func (s *entry) SetOutput(out io.Writer)    { s.Logger.Out = out }
+func (s *entry) GetOutput() (out io.Writer) { return s.Logger.Out }
+func (s *entry) Setup()                     {}
+
+func (s *entry) AddSkip(skip int) log.Logger {
+	return &entry{
+		s.Entry.WithField("SKIP", skip),
+	}
+}
+
+//
+//
+
+func (s *entry) Tracef(msg string, args ...interface{}) {
+	if log.GetTraceMode() {
+		s.Entry.Tracef(msg, args...)
+	}
+}
+
+func (s *entry) Debugf(msg string, args ...interface{}) {
+	s.Entry.Debugf(msg, args...)
+}
+
+func (s *entry) Infof(msg string, args ...interface{}) {
+	s.Entry.Infof(msg, args...)
+}
+
+func (s *entry) Warnf(msg string, args ...interface{}) {
+	s.Entry.Warnf(msg, args...)
+}
+
+func (s *entry) Errorf(msg string, args ...interface{}) {
+	s.Entry.Errorf(msg, args...)
+}
+
+func (s *entry) Fatalf(msg string, args ...interface{}) {
+	s.Entry.Fatalf(msg, args...)
+}
+
+func (s *entry) Panicf(msg string, args ...interface{}) {
+	s.Entry.Panicf(msg, args...)
+}
+
+func (s *entry) Printf(msg string, args ...interface{}) {
+	s.Entry.Infof(msg, args...)
+}
+
+//
+//
+
 type dzl struct {
 	*logrus.Logger
 	Config *log.LoggerConfig
+}
+
+func (s *dzl) AddSkip(skip int) log.Logger {
+	return &entry{
+		s.Logger.WithField("SKIP", skip),
+	}
 }
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
@@ -81,26 +143,12 @@ func (s *dzl) Print(args ...interface{}) {
 //
 //
 
-func (s *dzl) SetLevel(lvl log.Level) {
-	s.Logger.SetLevel(logrus.Level(lvl))
-}
+func (s *dzl) SetLevel(lvl log.Level)     { s.Logger.SetLevel(logrus.Level(lvl)) }
+func (s *dzl) GetLevel() log.Level        { return log.Level(s.Logger.Level) }
+func (s *dzl) SetOutput(out io.Writer)    { s.Logger.Out = out }
+func (s *dzl) GetOutput() (out io.Writer) { return s.Logger.Out }
+func (s *dzl) Setup()                     {}
 
-func (s *dzl) GetLevel() log.Level {
-	return log.Level(s.Logger.Level)
-}
-
-func (s *dzl) SetOutput(out io.Writer) {
-	s.Logger.Out = out
-}
-
-func (s *dzl) GetOutput() (out io.Writer) {
-	return s.Logger.Out
-}
-
-func (s *dzl) Setup() {
-	// initLogger("", "")
-}
-
-//func (s *dzl) AsFieldLogger() logx.FieldLogger {
+// func (s *dzl) AsFieldLogger() logx.FieldLogger {
 //	return s
-//}
+// }

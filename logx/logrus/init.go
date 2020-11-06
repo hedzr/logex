@@ -43,9 +43,11 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 
 	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
-	log.SetLogger(logger)
+	log.SetLogger(logger) // .AddSkip(extraSkip))
 	return logger
 }
+
+const extraSkip = 1
 
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	log.SetTraceMode(config.TraceMode)
@@ -73,7 +75,7 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
-	log.SetLogger(logger)
+	log.SetLogger(logger) // .AddSkip(extraSkip))
 	return logger
 }
 
@@ -135,14 +137,14 @@ We must have created the logging output file in it.
 	logex.SetupLoggingFormat(format, extraSkip)
 
 	logger := logrus.StandardLogger()
-	//logger.Infof("hello, logLevel = %q", logLevel)
-	//logrus.Infof("hello, logLevel = %q", logLevel)
+	// logger.Infof("hello, logLevel = %q", logLevel)
+	// logrus.Infof("hello, logLevel = %q", logLevel)
 	return logger
 }
 
-const extraSkip = 1
+// const extraSkip = 1
 
-//func setupLoggingFormat(format string, logexSkipFrames int) {
+// func setupLoggingFormat(format string, logexSkipFrames int) {
 //	switch format {
 //	case "json":
 //		logrus.SetFormatter(&logrus.JSONFormatter{
@@ -165,4 +167,4 @@ const extraSkip = 1
 //			EnvironmentOverrideColors: true,
 //		})
 //	}
-//}
+// }

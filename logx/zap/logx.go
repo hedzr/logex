@@ -11,6 +11,10 @@ type dzl struct {
 	sugar *zap.SugaredLogger
 }
 
+func (s *dzl) AddSkip(skip int) log.Logger {
+	return s
+}
+
 func (s *dzl) Tracef(msg string, args ...interface{}) {
 	if log.GetTraceMode() {
 		s.sugar.Debugf(msg, args...)
@@ -52,34 +56,34 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 
 func (s *dzl) Trace(args ...interface{}) {
 	if log.GetTraceMode() {
-		//s.Logger.Debug("", args...)
+		// s.Logger.Debug("", args...)
 	}
 }
 
 func (s *dzl) Debug(args ...interface{}) {
 	if log.GetDebugMode() {
-		//s.Logger.Debugw(msg, fields...)
+		// s.Logger.Debugw(msg, fields...)
 	}
 }
 
 func (s *dzl) Info(args ...interface{}) {
-	//s.Logger.Infow(msg, fields...)
+	// s.Logger.Infow(msg, fields...)
 }
 
 func (s *dzl) Warn(args ...interface{}) {
-	//s.Logger.Warnw(msg, fields...)
+	// s.Logger.Warnw(msg, fields...)
 }
 
 func (s *dzl) Error(args ...interface{}) {
-	//s.Logger.Errorw(msg, fields...)
+	// s.Logger.Errorw(msg, fields...)
 }
 
 func (s *dzl) Fatal(args ...interface{}) {
-	//s.Logger.Fatalw(msg, fields...)
+	// s.Logger.Fatalw(msg, fields...)
 }
 
 func (s *dzl) Print(args ...zap.Field) {
-	//s.Logger.Infow(msg, fields...)
+	// s.Logger.Infow(msg, fields...)
 }
 
 //
@@ -103,13 +107,13 @@ func (s *dzl) GetOutput() (out io.Writer) {
 }
 
 func (s *dzl) Setup() {
-	//initLogger("", "")
-	//s.sugar = s.Logger.Sugar()
+	// initLogger("", "")
+	// s.sugar = s.Logger.Sugar()
 }
 
-//func (s *dzl) AsFieldLogger() FieldLogger {
+// func (s *dzl) AsFieldLogger() FieldLogger {
 //	return s
-//}
+// }
 
 func AsFieldLogger(s log.Logger) FieldLogger {
 	if l, ok := s.(FieldLogger); ok {

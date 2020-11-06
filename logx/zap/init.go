@@ -158,7 +158,7 @@ func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 	return logger
 }
 
-//func initLogger(logPath string, logLevel string) *zap.Logger {
+// func initLogger(logPath string, logLevel string) *zap.Logger {
 //	hook := lumberjack.Logger{
 //		Filename:   logPath, // the logging file path
 //		MaxSize:    1024,    // megabytes
@@ -189,34 +189,34 @@ func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 //	)
 //	logger := zap.New(core)
 //	return logger
-//}
+// }
 //
-//var sugarLogger *zap.SugaredLogger
+// var sugarLogger *zap.SugaredLogger
 //
-//func mainEntry() {
+// func mainEntry() {
 //	initOneLogger()
 //	defer sugarLogger.Sync()
 //	simpleHttpGet("www.sogo.com")
 //	simpleHttpGet("http://www.sogo.com")
-//}
+// }
 //
-//func initOneLogger() {
+// func initOneLogger() {
 //	encoder := getEncoder()
 //	writeSyncer := getLogWriter()
 //	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
 //
 //	logger := zap.New(core, zap.AddCaller())
 //	sugarLogger = logger.Sugar()
-//}
+// }
 //
-//func getEncoder() zapcore.Encoder {
+// func getEncoder() zapcore.Encoder {
 //	encoderConfig := zap.NewProductionEncoderConfig()
 //	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 //	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 //	return zapcore.NewConsoleEncoder(encoderConfig)
-//}
+// }
 //
-//func getLogWriter() zapcore.WriteSyncer {
+// func getLogWriter() zapcore.WriteSyncer {
 //	lumberJackLogger := &lumberjack.Logger{
 //		Filename:   "./test.log",
 //		MaxSize:    1,
@@ -225,9 +225,9 @@ func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 //		Compress:   false,
 //	}
 //	return zapcore.AddSync(lumberJackLogger)
-//}
+// }
 //
-//func simpleHttpGet(url string) {
+// func simpleHttpGet(url string) {
 //	sugarLogger.Debugf("Trying to hit GET request for %s", url)
 //	sugarLogger.Info("Success..",
 //		zap.String("statusCode", "200"),
@@ -239,4 +239,4 @@ func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 //		sugarLogger.Infof("Success! statusCode = %s for URL %s", resp.Status, url)
 //		resp.Body.Close()
 //	}
-//}
+// }
