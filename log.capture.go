@@ -5,6 +5,7 @@
 package logex
 
 import (
+	"github.com/hedzr/log"
 	"github.com/sirupsen/logrus"
 	"io"
 	"testing"
@@ -20,14 +21,13 @@ import (
 //   }
 //
 
-
 // LogCapturer reroutes testing.T log output
 type LogCapturer interface {
 	Release()
 }
 
 type logCapturer struct {
-	*testing.T
+	testing.TB
 	origOut io.Writer
 }
 
@@ -37,14 +37,14 @@ func (tl logCapturer) Write(p []byte) (n int, err error) {
 }
 
 func (tl logCapturer) Release() {
-	logrus.SetOutput(tl.origOut)
+	log.SetOutput(tl.origOut)
 }
 
 // CaptureLog redirects logrus output to testing.Log
-func CaptureLog(t *testing.T) LogCapturer {
-	lc := logCapturer{T: t, origOut: logrus.StandardLogger().Out}
+func CaptureLog(tb testing.TB) LogCapturer {
+	lc := logCapturer{TB: tb, origOut: logrus.StandardLogger().Out}
 	if !testing.Verbose() {
-		logrus.SetOutput(lc)
+		log.SetOutput(lc)
 	}
 	return &lc
 }
