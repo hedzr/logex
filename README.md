@@ -85,6 +85,15 @@ sugar.New(level string, traceMode, debugMode bool, opts ...Opt)
 
 ```
 
+#### Or, build the logger with pure go codes
+
+```go
+import "github.com/hedzr/logex/build"
+// config:=build.NewLoggerConfig()
+config := build.NewLoggerConfigWith(true, "logrus", "debug")
+logger := build.New(config)
+logger.Debugf("int value = %v", intVal)
+```
 
 
 
