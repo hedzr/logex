@@ -11,9 +11,9 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
 
 
-an enhanced for [logrus](https://github.com/sirupsen/logrus). `logex` append the context call info to the log.
+an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attaches the context caller info to the logging output.
 
-Since v1.2.0, `logex` allows switching the logging backend transparently.
+Since v1.2.0, `logex` allows switching the logging backends (such as logrus, zap, ...) transparently.
 
 
 
@@ -23,7 +23,7 @@ Since v1.2.0, `logex` allows switching the logging backend transparently.
 
 ## Features
 
-- Pre-setup logging backends with clickeable caller info: logrus or zap
+- Pre-setup logging backends with clickable caller info: logrus or zap
 - Generic logging interface to cover the various logging backends via: [`log.Logger`](https://github.com/hedzr/log/blob/master/logger.go#L10), [`build.New(config)`](https://github.com/hedzr/logex/blob/master/build/builder.go#L14)
 - 
 
