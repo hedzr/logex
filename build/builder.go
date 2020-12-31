@@ -4,7 +4,6 @@ package build
 
 import (
 	"github.com/hedzr/log"
-	"github.com/hedzr/logex"
 	"github.com/hedzr/logex/logx/logrus"
 	"github.com/hedzr/logex/logx/zap"
 	"github.com/hedzr/logex/logx/zap/sugar"
@@ -12,7 +11,8 @@ import (
 
 // New creates and returns a Logger instance from LoggerConfig
 func New(config *log.LoggerConfig) log.Logger {
-	if logex.GetLevel() == log.OffLevel {
+	l, _ := log.ParseLevel(config.Level)
+	if l == log.OffLevel {
 		return log.NewDummyLogger()
 	}
 
