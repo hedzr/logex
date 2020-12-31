@@ -144,7 +144,7 @@ We must have created the logging output file in it.
 
 }
 
-const extraSkip = 1
+const extraSkip = 2
 
 func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 	// alevel := zap.NewAtomicLevel()

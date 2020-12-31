@@ -19,20 +19,20 @@ import (
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)
-	// ll := cmdr.GetStringR("logger.level", "info")
-	lvl, _ := log.ParseLevel(level)
-	if log.GetDebugMode() {
-		if lvl < log.DebugLevel {
-			lvl = log.DebugLevel
-			level = "debug"
-		}
-	}
-	if log.GetTraceMode() {
-		if lvl < log.TraceLevel {
-			lvl = log.TraceLevel
-			level = "debug"
-		}
-	}
+	//// ll := cmdr.GetStringR("logger.level", "info")
+	//lvl, _ := log.ParseLevel(level)
+	//if log.GetDebugMode() {
+	//	if lvl < log.DebugLevel {
+	//		lvl = log.DebugLevel
+	//		level = "debug"
+	//	}
+	//}
+	//if log.GetTraceMode() {
+	//	if lvl < log.TraceLevel {
+	//		lvl = log.TraceLevel
+	//		level = "debug"
+	//	}
+	//}
 
 	zl := initLogger(log.NewLoggerConfig())
 
@@ -53,20 +53,20 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	log.SetTraceMode(config.TraceMode)
 	log.SetDebugMode(config.DebugMode)
-	// ll := cmdr.GetStringR("logger.level", "info")
-	lvl, _ := log.ParseLevel(config.Level)
-	if log.GetDebugMode() {
-		if lvl < log.DebugLevel {
-			lvl = log.DebugLevel
-			config.Level = "debug"
-		}
-	}
-	if log.GetTraceMode() {
-		if lvl < log.TraceLevel {
-			lvl = log.TraceLevel
-			config.Level = "debug" // zap hasn't `trace` level
-		}
-	}
+	//// ll := cmdr.GetStringR("logger.level", "info")
+	//lvl, _ := log.ParseLevel(config.Level)
+	//if log.GetDebugMode() {
+	//	if lvl < log.DebugLevel {
+	//		lvl = log.DebugLevel
+	//		config.Level = "debug"
+	//	}
+	//}
+	//if log.GetTraceMode() {
+	//	if lvl < log.TraceLevel {
+	//		lvl = log.TraceLevel
+	//		config.Level = "debug" // zap hasn't `trace` level
+	//	}
+	//}
 
 	zl := initLogger(config)
 
@@ -144,4 +144,4 @@ We must have created the logging output file in it.
 
 }
 
-const extraSkip = 1
+const extraSkip = 2
