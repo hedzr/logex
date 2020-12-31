@@ -19,20 +19,20 @@ import (
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)
-	// ll := cmdr.GetStringR("logger.level", "info")
-	lvl, _ := log.ParseLevel(level)
-	if log.GetDebugMode() {
-		if lvl < log.DebugLevel {
-			lvl = log.DebugLevel
-			level = "debug"
-		}
-	}
-	if log.GetTraceMode() {
-		if lvl < log.TraceLevel {
-			lvl = log.TraceLevel
-			level = "trace"
-		}
-	}
+	//// ll := cmdr.GetStringR("logger.level", "info")
+	//lvl, _ := log.ParseLevel(level)
+	//if log.GetDebugMode() {
+	//	if lvl < log.DebugLevel {
+	//		lvl = log.DebugLevel
+	//		level = "debug"
+	//	}
+	//}
+	//if log.GetTraceMode() {
+	//	if lvl < log.TraceLevel {
+	//		lvl = log.TraceLevel
+	//		level = "trace"
+	//	}
+	//}
 
 	config := log.NewLoggerConfig()
 	zl := initLogger(config)
