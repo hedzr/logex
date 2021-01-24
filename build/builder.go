@@ -45,6 +45,8 @@ func RegisterBuilder(backendName string, builderFunc log.BuilderFunc) {
 }
 
 func init() {
+	builders = make(map[string]log.BuilderFunc)
+
 	builders["dummy"] = log.NewDummyLoggerWithConfig
 	builders["none"] = log.NewDummyLoggerWithConfig
 	builders["off"] = log.NewDummyLoggerWithConfig
