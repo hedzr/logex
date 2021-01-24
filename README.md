@@ -25,11 +25,11 @@ Since v1.2.0, `logex` allows switching the logging backends (such as logrus, zap
 
 - Pre-setup logging backends with clickable caller info: logrus or zap
 - Generic logging interface to cover the various logging backends via: [`log.Logger`](https://github.com/hedzr/log/blob/master/logger.go#L10), [`build.New(config)`](https://github.com/hedzr/logex/blob/master/build/builder.go#L14)
-- 
+  - allow registering custom logging backend by [build.RegisterBuilder(backendName, log.BuilderFunc) ` ](https://github.com/hedzr/logex/blob/master/build/builder.go#L43).
 
 
 
-## Usage
+## Usages
 
 
 
@@ -97,6 +97,29 @@ logger.Debugf("int value = %v", intVal)
 
 
 
+That's all stocked.
+
+
+
+### Integrating your backend:
+
+You can wrap a logging backend with `log.Logger` and register it into logex/build. Why we should do it like this? A universal logger creating interface from logex/build will simplify the application initiliazing coding, esp. in a framework.
+
+```go
+import "github.com/hedzr/logex/build"
+
+build.RegisterBuilder("someone", createSomeLogger)
+
+func createSomeLogger(config *log.LoggerConfig) log.Logger {
+	//... wrapping your logging backend to log.Logger
+}
+
+// and use it:
+build.New(build.NewLoggerConfigWith(true, "someone", "debug"))
+build.New(build.NewLoggerConfigWith(false, "someone", "info"))
+```
+
+
 
 ### Legacy tools
 
@@ -159,10 +182,6 @@ And in a test function, you could code now:
 
 
 
-
-## ACK
-
-- [logrus](https://github.com/sirupsen/logrus)
 
 ## LICENSE
 
