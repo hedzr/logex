@@ -46,7 +46,10 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	return logger
 }
 
-// New create a sugared zap sugared logger
+// NewWithConfigSimple create a sugared zap sugared logger
+func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithConfig(config) }
+
+// NewWithConfig create a sugared zap sugared logger
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
 //

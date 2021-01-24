@@ -49,6 +49,8 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 
 const extraSkip = 1
 
+func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithConfig(config) }
+
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	log.SetTraceMode(config.TraceMode)
 	log.SetDebugMode(config.DebugMode)

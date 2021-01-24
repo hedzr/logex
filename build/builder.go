@@ -16,6 +16,10 @@ func New(config *log.LoggerConfig) log.Logger {
 		return log.NewDummyLogger()
 	}
 
+	if bf, ok := builders[config.Backend]; ok {
+		return bf(config)
+	}
+
 	var logger log.Logger
 	switch config.Backend {
 	case "dummy", "none", "off":
@@ -31,6 +35,27 @@ func New(config *log.LoggerConfig) log.Logger {
 		//logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
 	}
 	return logger
+}
+
+var builders map[string]log.BuilderFunc
+
+// RegisterBuilder register a builder for your logger.
+func RegisterBuilder(backendName string, builderFunc log.BuilderFunc) {
+	builders[backendName] = builderFunc
+}
+
+func init() {
+	builders["dummy"] = log.NewDummyLoggerWithConfig
+	builders["none"] = log.NewDummyLoggerWithConfig
+	builders["off"] = log.NewDummyLoggerWithConfig
+
+	builders["std"] = log.NewStdLoggerWithConfig
+	builders["standard"] = log.NewStdLoggerWithConfig
+	builders["go"] = log.NewStdLoggerWithConfig
+
+	builders["logrus"] = logrus.NewWithConfigSimple
+	builders["sugar"] = sugar.NewWithConfigSimple
+	builders["zap"] = zap.NewWithConfigSimple
 }
 
 // NewLoggerConfig returns a default LoggerConfig
