@@ -4,6 +4,7 @@ package logex
 
 import (
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/dir"
 	"testing"
 )
 
@@ -19,6 +20,8 @@ func TestEnable(t *testing.T) {
 	if GetLevel() != log.DebugLevel {
 		t.Fatal("wrong level")
 	}
+
+	t.Logf("cwd: %v", dir.GetCurrentDir())
 
 	SetupLoggingFormat("json", 1)
 	SetupLoggingFormat("text", 1)
