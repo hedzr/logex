@@ -9,7 +9,7 @@ const (
 	// AppName const
 	AppName = "logex"
 	// Version const
-	Version = "1.3.11"
+	Version = "1.3.12"
 	// VersionInt const
-	VersionInt = 0x01030b
+	VersionInt = 0x01030c
 )
