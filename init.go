@@ -12,16 +12,21 @@ import (
 	"os"
 )
 
+// GetLevel returns the current logging level in log/logex subsystem
 func GetLevel() log.Level {
 	return log.GetLevel()
 }
 
+// Enable makes logrus logging enabled.
+// Deprecated it's obsoleted
 func Enable() {
 	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
 	logrus.SetReportCaller(true)
 	// logrus.AddHook(logex.hook.DefaultContextHook)
 }
 
+// EnableWith makes logrus logging enabled.
+// Deprecated it's obsoleted
 func EnableWith(lvl log.Level, opts ...Option) {
 	if lvl == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
@@ -39,6 +44,8 @@ func EnableWith(lvl log.Level, opts ...Option) {
 	}
 }
 
+// SetupLoggingFormat specify logrus logging configurations.
+// Deprecated it's obsoleted
 func SetupLoggingFormat(format string, logexSkipFrames int) {
 	switch format {
 	case "json":
@@ -68,8 +75,12 @@ func SetupLoggingFormat(format string, logexSkipFrames int) {
 	}
 }
 
+// Option specify option function.
+// Deprecated it's obsoleted
 type Option func()
 
+// SKIP is a constant key
+// Deprecated it's obsoleted
 const SKIP = formatter.SKIP
 
 // var level log.Level
