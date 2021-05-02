@@ -36,7 +36,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Test
-        run: go test ./...
+        run: |
+          for GOOS in $(go tool dist list|awk -F'/' '{print $1}'|sort -u); do
+            echo -e "\n\nTESTING FOR $GOOS ...\n"
+            go test -v -race ./...
+          done
 
   coverage:
     #needs: test
