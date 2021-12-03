@@ -6,7 +6,7 @@ go 1.13
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
-	github.com/hedzr/log v1.3.22
+	github.com/hedzr/log v1.3.23
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3
 	github.com/sirupsen/logrus v1.8.1
 	go.uber.org/zap v1.17.0
