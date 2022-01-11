@@ -44,13 +44,26 @@ func EnableWith(lvl log.Level, opts ...Option) {
 	}
 }
 
+const (
+	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
+	defaultShortTimestampFormat = "01-02 15:04:05.999"
+	//defaultShortestTimestampFormat = "15:04:05.999"
+)
+
 // SetupLoggingFormat specify logrus logging configurations.
 // Deprecated it's obsoleted
-func SetupLoggingFormat(format string, logexSkipFrames int) {
+func SetupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
+	if tsFormat == "" {
+		tsFormat = defaultTimestampFormat
+		if shortTimestamp {
+			tsFormat = defaultShortTimestampFormat
+		}
+	}
+
 	switch format {
 	case "json":
 		logrus.SetFormatter(&logrus.JSONFormatter{
-			TimestampFormat:  "2006-01-02 15:04:05.000",
+			TimestampFormat:  tsFormat,
 			DisableTimestamp: false,
 			PrettyPrint:      false,
 		})
@@ -63,7 +76,7 @@ func SetupLoggingFormat(format string, logexSkipFrames int) {
 			ForceColors:               true,
 			DisableColors:             false,
 			FullTimestamp:             true,
-			TimestampFormat:           "2006-01-02 15:04:05.000",
+			TimestampFormat:           tsFormat,
 			Skip:                      logexSkipFrames,
 			EnableSkip:                e,
 			EnvironmentOverrideColors: true,
