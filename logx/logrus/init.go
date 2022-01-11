@@ -85,7 +85,7 @@ type Opt func(logger *logrus.Logger)
 
 func WithLoggingFormat(format string) Opt {
 	return func(logger *logrus.Logger) {
-		logex.SetupLoggingFormat(format, extraSkip)
+		logex.SetupLoggingFormat(format, extraSkip, false, "")
 	}
 }
 
@@ -136,7 +136,7 @@ We must have created the logging output file in it.
 	logex.EnableWith(ll)
 
 	format := "text" // cmdr.GetStringR("logger.format", "text")
-	logex.SetupLoggingFormat(format, extraSkip)
+	logex.SetupLoggingFormat(format, extraSkip, config.ShortTimestamp, config.TimestampFormat)
 
 	logger := logrus.StandardLogger()
 	// logger.Infof("hello, logLevel = %q", logLevel)
