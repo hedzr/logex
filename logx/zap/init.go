@@ -89,6 +89,11 @@ func initLogger(config *log.LoggerConfig) *zap.Logger {
 	var level zapcore.Level
 	_ = level.Set(config.Level)
 
+	var skip = extraSkip
+	if config.ExtraSkip > 0 {
+		skip += config.ExtraSkip
+	}
+
 	if config.Target == "file" {
 		var w zapcore.WriteSyncer
 
@@ -133,7 +138,7 @@ We must have created the logging output file in it.
 			level,
 		)
 		logger := zap.New(core)
-		return logger.WithOptions(zap.AddCallerSkip(extraSkip)) // .Sugar()
+		return logger.WithOptions(zap.AddCallerSkip(skip)) // .Sugar()
 
 	} else {
 		logCfg := zap.NewDevelopmentConfig()
@@ -142,12 +147,12 @@ We must have created the logging output file in it.
 		logCfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 		logCfg.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 		logger, _ := logCfg.Build()
-		return logger.WithOptions(zap.AddCallerSkip(extraSkip)) // .Sugar()
+		return logger.WithOptions(zap.AddCallerSkip(skip)) // .Sugar()
 	}
 
 }
 
-const extraSkip = 2
+const extraSkip = 1
 
 func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 	// alevel := zap.NewAtomicLevel()
