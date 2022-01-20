@@ -69,7 +69,7 @@ func NewLoggerConfig() *log.LoggerConfig {
 }
 
 // NewLoggerConfigWith returns a default LoggerConfig
-func NewLoggerConfigWith(enabled bool, backend, level string) *log.LoggerConfig {
-	c := log.NewLoggerConfigWith(enabled, backend, level)
+func NewLoggerConfigWith(enabled bool, backend, level string, opts ...log.Opt) *log.LoggerConfig {
+	c := log.NewLoggerConfigWith(enabled, backend, level, opts...)
 	return c
 }
