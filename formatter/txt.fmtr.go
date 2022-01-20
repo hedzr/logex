@@ -364,6 +364,7 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 
 	caller := ""
 	skipFile := false
+	skipVia := true
 
 	if entry.HasCaller() {
 		funcVal := fmt.Sprintf("\u001B[%dm%s\u001B[0m()", darkGray, entry.Caller.Function)
@@ -379,12 +380,15 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 			funcVal, fileVal = f.CallerPrettyfier(entry.Caller)
 		}
 		caller = fileVal + " " + funcVal
+		caller = strings.ReplaceAll(caller, "github.com", "GH")
+		caller = strings.ReplaceAll(caller, "gitlab.com", "GL")
 	}
 
 	if f.DisableTimestamp {
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m %-48s %s ", levelColor, levelText, entry.Message, caller)
 	} else if !f.FullTimestamp {
 		// echo -e "Normal \e[2mDim"
+		skipVia = false
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m\x1b[2m \x1b[%dm[%04d]\x1b[0m %-48s \x1b[2m\x1b[%dm%s\x1b[0m ",
 			levelColor, levelText, darkColor, int(entry.Time.Sub(baseTimestamp)/time.Second), entry.Message, darkColor, caller)
 	} else {
@@ -392,10 +396,11 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 			levelColor, levelText, darkColor, entry.Time.Format(timestampFormat), entry.Message, caller)
 	}
 	for _, k := range keys {
-		if skipFile {
-			if strings.HasSuffix(k, resolve(f.FieldMap, logrus.FieldKeyFile)) {
-				continue
-			}
+		if skipFile && strings.HasSuffix(k, resolve(f.FieldMap, logrus.FieldKeyFile)) {
+			continue
+		}
+		if skipVia && k == "via" {
+			continue
 		}
 
 		v := data[k]
