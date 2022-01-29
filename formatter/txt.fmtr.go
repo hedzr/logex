@@ -249,6 +249,8 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 					sf, ok = f.Skip, true
 					// } else if !f.EnableSkip {
 					//	 sf, ok = 1, true
+				} else {
+					sf = int(0)
 				}
 				if v, yes := data[SKIP]; yes {
 					sf, ok = sf.(int)+v.(int), yes
@@ -388,7 +390,7 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m %-48s %s ", levelColor, levelText, entry.Message, caller)
 	} else if !f.FullTimestamp {
 		// echo -e "Normal \e[2mDim"
-		skipVia = false
+		//skipVia = false
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m\x1b[2m \x1b[%dm[%04d]\x1b[0m %-48s \x1b[2m\x1b[%dm%s\x1b[0m ",
 			levelColor, levelText, darkColor, int(entry.Time.Sub(baseTimestamp)/time.Second), entry.Message, darkColor, caller)
 	} else {
