@@ -7,9 +7,6 @@ package logex
 import (
 	"github.com/hedzr/log"
 	"github.com/hedzr/logex/formatter"
-	"github.com/sirupsen/logrus"
-	"io/ioutil"
-	"os"
 )
 
 // GetLevel returns the current logging level in log/logex subsystem
@@ -17,76 +14,80 @@ func GetLevel() log.Level {
 	return log.GetLevel()
 }
 
-// Enable makes logrus logging enabled.
-// Deprecated it's obsoleted
-func Enable() {
-	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
-	logrus.SetReportCaller(true)
-	// logrus.AddHook(logex.hook.DefaultContextHook)
-}
+//// Enable makes logrus logging enabled.
+//// Deprecated it's obsoleted
+//func Enable() {
+//	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+//	//logrus.SetReportCaller(true)
+//	//// logrus.AddHook(logex.hook.DefaultContextHook)
+//}
 
 // EnableWith makes logrus logging enabled.
 // Deprecated it's obsoleted
 func EnableWith(lvl log.Level, opts ...Option) {
-	if lvl == log.OffLevel {
-		logrus.SetLevel(logrus.ErrorLevel)
-		logrus.SetOutput(ioutil.Discard)
-	} else {
-		logrus.SetLevel(logrus.Level(lvl))
-		logrus.SetOutput(os.Stdout)
-	}
 	log.SetLevel(lvl)
-	logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
-	logrus.SetReportCaller(true)
-	// logrus.AddHook(logex.hook.DefaultContextHook)
+	log.Setup()
+
+	//if lvl == log.OffLevel {
+	//	logrus.SetLevel(logrus.ErrorLevel)
+	//	logrus.SetOutput(ioutil.Discard)
+	//} else {
+	//	logrus.SetLevel(logrus.Level(lvl))
+	//	logrus.SetOutput(os.Stdout)
+	//}
+	//log.SetLevel(lvl)
+	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+	//logrus.SetReportCaller(true)
+	//// logrus.AddHook(logex.hook.DefaultContextHook)
+
 	for _, opt := range opts {
 		opt()
 	}
 }
 
-const (
-	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
-	defaultShortTimestampFormat = "01-02 15:04:05.999"
-	//defaultShortestTimestampFormat = "15:04:05.999"
-)
+//const (
+//	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
+//	defaultShortTimestampFormat = "01-02 15:04:05.999"
+//	//defaultShortestTimestampFormat = "15:04:05.999"
+//)
 
-// SetupLoggingFormat specify logrus logging configurations.
-// Deprecated it's obsoleted
-func SetupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
-	if tsFormat == "" {
-		tsFormat = defaultTimestampFormat
-		if shortTimestamp {
-			tsFormat = defaultShortTimestampFormat
-		}
-	}
-
-	switch format {
-	case "json":
-		logrus.SetFormatter(&logrus.JSONFormatter{
-			TimestampFormat:  tsFormat,
-			DisableTimestamp: false,
-			PrettyPrint:      false,
-		})
-	default:
-		e := false
-		if logexSkipFrames > 0 {
-			e = true
-		}
-		logrus.SetFormatter(&formatter.TextFormatter{
-			ForceColors:               true,
-			DisableColors:             false,
-			FullTimestamp:             true,
-			TimestampFormat:           tsFormat,
-			Skip:                      logexSkipFrames,
-			EnableSkip:                e,
-			EnvironmentOverrideColors: true,
-		})
-	}
-	if GetLevel() == log.OffLevel {
-		logrus.SetLevel(logrus.ErrorLevel)
-		logrus.SetOutput(ioutil.Discard)
-	}
-}
+//// SetupLoggingFormat specify logrus logging configurations.
+//// Deprecated it's obsoleted
+//func SetupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
+//	if tsFormat == "" {
+//		tsFormat = defaultTimestampFormat
+//		if shortTimestamp {
+//			tsFormat = defaultShortTimestampFormat
+//		}
+//	}
+//
+//	switch format {
+//	case "json":
+//		logrus.SetFormatter(&logrus.JSONFormatter{
+//			TimestampFormat:  tsFormat,
+//			DisableTimestamp: false,
+//			PrettyPrint:      false,
+//		})
+//	default:
+//		e := false
+//		if logexSkipFrames > 0 {
+//			e = true
+//		}
+//		logrus.SetFormatter(&formatter.TextFormatter{
+//			ForceColors:               true,
+//			DisableColors:             false,
+//			FullTimestamp:             true,
+//			TimestampFormat:           tsFormat,
+//			Skip:                      logexSkipFrames,
+//			EnableSkip:                e,
+//			EnvironmentOverrideColors: true,
+//		})
+//	}
+//	if GetLevel() == log.OffLevel {
+//		logrus.SetLevel(logrus.ErrorLevel)
+//		logrus.SetOutput(ioutil.Discard)
+//	}
+//}
 
 // Option specify option function.
 // Deprecated it's obsoleted
