@@ -4,6 +4,7 @@ import (
 	"github.com/hedzr/log"
 	"github.com/sirupsen/logrus"
 	"io"
+	"io/ioutil"
 )
 
 type entry struct {
@@ -40,18 +41,38 @@ func (s *entry) Infof(msg string, args ...interface{}) {
 }
 
 func (s *entry) Warnf(msg string, args ...interface{}) {
+	//e := s.Entry // .WithContext(context.TODO())
+	//sav := e.Logger.Out
+	//e.Logger.Out = os.Stderr
+	//e.Warnf(msg, args...)
+	//e.Logger.Out = sav
 	s.Entry.Warnf(msg, args...)
 }
 
 func (s *entry) Errorf(msg string, args ...interface{}) {
+	//e := s.Entry // .WithContext(context.TODO())
+	//sav := e.Logger.Out
+	//e.Logger.Out = os.Stderr
+	//e.Errorf(msg, args...)
+	//e.Logger.Out = sav
 	s.Entry.Errorf(msg, args...)
 }
 
 func (s *entry) Fatalf(msg string, args ...interface{}) {
+	//e := s.Entry // .WithContext(context.TODO())
+	//sav := e.Logger.Out
+	//e.Logger.Out = os.Stderr
+	//e.Fatalf(msg, args...)
+	//e.Logger.Out = sav
 	s.Entry.Fatalf(msg, args...)
 }
 
 func (s *entry) Panicf(msg string, args ...interface{}) {
+	//e := s.Entry // .WithContext(context.TODO())
+	//sav := e.Logger.Out
+	//e.Logger.Out = os.Stderr
+	//e.Panicf(msg, args...)
+	//e.Logger.Out = sav
 	s.Entry.Panicf(msg, args...)
 }
 
@@ -88,19 +109,31 @@ func (s *dzl) Infof(msg string, args ...interface{}) {
 }
 
 func (s *dzl) Warnf(msg string, args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Warnf(msg, args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Errorf(msg string, args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Errorf(msg, args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Fatalf(msg string, args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Fatalf(msg, args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Panicf(msg string, args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Panicf(msg, args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Printf(msg string, args ...interface{}) {
@@ -125,15 +158,24 @@ func (s *dzl) Info(args ...interface{}) {
 }
 
 func (s *dzl) Warn(args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Warn(args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Error(args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Error(args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Fatal(args ...interface{}) {
+	//sav := s.Logger.Out
+	//s.Logger.Out = os.Stderr
 	s.Logger.Fatal(args...)
+	//s.Logger.Out = sav
 }
 
 func (s *dzl) Print(args ...interface{}) {
@@ -143,11 +185,30 @@ func (s *dzl) Print(args ...interface{}) {
 //
 //
 
-func (s *dzl) SetLevel(lvl log.Level)     { s.Logger.SetLevel(logrus.Level(lvl)) }
-func (s *dzl) GetLevel() log.Level        { return log.Level(s.Logger.Level) }
-func (s *dzl) SetOutput(out io.Writer)    { s.Logger.Out = out }
+func (s *dzl) SetLevel(lvl log.Level) { s.Logger.SetLevel(logrus.Level(lvl)) }
+func (s *dzl) GetLevel() log.Level    { return log.Level(s.Logger.Level) }
+func (s *dzl) SetOutput(out io.Writer) {
+	s.Logger.Out = out
+}
 func (s *dzl) GetOutput() (out io.Writer) { return s.Logger.Out }
-func (s *dzl) Setup()                     {}
+
+func (s *dzl) Setup() {
+	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+	//logrus.SetReportCaller(true)
+
+	lvl := s.GetLevel()
+	if lvl == log.OffLevel {
+		logrus.SetLevel(logrus.ErrorLevel)
+		logrus.SetOutput(ioutil.Discard)
+	} else {
+		logrus.SetLevel(logrus.Level(lvl))
+		//logrus.SetOutput(os.Stdout)
+	}
+	log.SetLevel(lvl)
+
+	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+	//logrus.SetReportCaller(true)
+}
 
 // func (s *dzl) AsFieldLogger() logx.FieldLogger {
 //	return s

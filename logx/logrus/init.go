@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/exec"
-	"github.com/hedzr/logex"
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus/hooks/writer"
 	"io/ioutil"
 	"os"
 	"path"
@@ -35,19 +35,20 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	//}
 
 	config := log.NewLoggerConfig()
-	zl := initLogger(config)
+	logger := &dzl{Config: config}
+
+	logger.initLogger()
 
 	for _, opt := range opts {
-		opt(zl)
+		opt(logger.Logger)
 	}
 
-	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
 	log.SetLogger(logger) // .AddSkip(extraSkip))
 	return logger
 }
 
-const extraSkip = 1
+//const extraSkip = 1
 
 func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithConfig(config) }
 
@@ -69,13 +70,14 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 		}
 	}
 
-	zl := initLogger(config)
+	logger := &dzl{Config: config}
+
+	logger.initLogger()
 
 	for _, opt := range opts {
-		opt(zl)
+		opt(logger.Logger)
 	}
 
-	logger := &dzl{Logger: zl, Config: config}
 	logger.Setup()
 	log.SetLogger(logger) // .AddSkip(extraSkip))
 	return logger
@@ -83,15 +85,15 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 type Opt func(logger *logrus.Logger)
 
-func WithLoggingFormat(format string) Opt {
-	return func(logger *logrus.Logger) {
-		logex.SetupLoggingFormat(format, extraSkip, false, "")
-	}
-}
+//func WithLoggingFormat(format string) Opt {
+//	return func(logger *logrus.Logger) {
+//		logex.SetupLoggingFormat(format, extraSkip, false, "")
+//	}
+//}
 
-func initLogger(config *log.LoggerConfig) *logrus.Logger {
+func (s *dzl) initLogger() *logrus.Logger {
 	var ll log.Level
-	ll, _ = log.ParseLevel(config.Level)
+	ll, _ = log.ParseLevel(s.Config.Level)
 	if ll == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 		logrus.SetOutput(ioutil.Discard)
@@ -99,14 +101,14 @@ func initLogger(config *log.LoggerConfig) *logrus.Logger {
 	}
 
 	var err error
-	if config.Target == "file" {
+	if s.Config.Target == "file" {
 		logrus.SetLevel(logrus.Level(ll))
 
 		logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
 		logrus.SetReportCaller(true)
 
 		var file *os.File
-		fPath := path.Join(os.ExpandEnv(config.Directory), "output.log")
+		fPath := path.Join(os.ExpandEnv(s.Config.Directory), "output.log")
 		fDir := path.Dir(fPath)
 		err = exec.EnsureDir(fDir)
 		if err != nil {
@@ -130,43 +132,87 @@ We must have created the logging output file in it.
 		}
 
 		logrus.Warnf("Failed to log to file %q, using default stderr", fPath)
+	} else {
+		logrus.SetOutput(ioutil.Discard) // Send all logs to nowhere by default
+
+		logrus.AddHook(&writer.Hook{ // Send logs with level higher than warning to stderr
+			Writer: os.Stderr,
+			LogLevels: []logrus.Level{
+				logrus.PanicLevel,
+				logrus.FatalLevel,
+				logrus.ErrorLevel,
+				logrus.WarnLevel,
+			},
+		})
+		logrus.AddHook(&writer.Hook{ // Send info and debug logs to stdout
+			Writer: os.Stdout,
+			LogLevels: []logrus.Level{
+				logrus.InfoLevel,
+				logrus.DebugLevel,
+				logrus.TraceLevel,
+			},
+		})
 	}
 
-	// setupLoggingFormat(format, 0)
-	logex.EnableWith(ll)
+	//// setupLoggingFormat(format, 0)
+	//logex.EnableWith(ll)
+	//
+	//format := "text" // cmdr.GetStringR("logger.format", "text")
+	//logex.SetupLoggingFormat(format, extraSkip, config.ShortTimestamp, config.TimestampFormat)
 
 	format := "text" // cmdr.GetStringR("logger.format", "text")
-	logex.SetupLoggingFormat(format, extraSkip, config.ShortTimestamp, config.TimestampFormat)
+	s.setupLoggingFormat(format, extraSkip, s.Config.ShortTimestamp, s.Config.TimestampFormat)
 
 	logger := logrus.StandardLogger()
+	s.Logger = logger
 	// logger.Infof("hello, logLevel = %q", logLevel)
 	// logrus.Infof("hello, logLevel = %q", logLevel)
 	return logger
 }
 
+const (
+	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
+	defaultShortTimestampFormat = "01-02 15:04:05.999"
+	//defaultShortestTimestampFormat = "15:04:05.999"
+	extraSkip = 1
+)
+
 // const extraSkip = 1
 
-// func setupLoggingFormat(format string, logexSkipFrames int) {
-//	switch format {
-//	case "json":
-//		logrus.SetFormatter(&logrus.JSONFormatter{
-//			TimestampFormat:  "2006-01-02 15:04:05.000",
-//			DisableTimestamp: false,
-//			PrettyPrint:      false,
-//		})
-//	default:
-//		e := false
-//		if logexSkipFrames > 0 {
-//			e = true
-//		}
-//		logrus.SetFormatter(&formatter.TextFormatter{
-//			ForceColors:               true,
-//			DisableColors:             false,
-//			FullTimestamp:             true,
-//			TimestampFormat:           "2006-01-02 15:04:05.000",
-//			Skip:                      logexSkipFrames,
-//			EnableSkip:                e,
-//			EnvironmentOverrideColors: true,
-//		})
-//	}
-// }
+func (s *dzl) setupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
+	if tsFormat == "" {
+		tsFormat = defaultTimestampFormat
+		if shortTimestamp {
+			tsFormat = defaultShortTimestampFormat
+		}
+	}
+
+	switch format {
+	case "json":
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			TimestampFormat:  tsFormat,
+			DisableTimestamp: false,
+			PrettyPrint:      false,
+		})
+	default:
+		e := false
+		if logexSkipFrames > 0 {
+			e = true
+		}
+		logrus.SetFormatter(&formatter.TextFormatter{
+			ForceColors:               true,
+			DisableColors:             false,
+			FullTimestamp:             true,
+			TimestampFormat:           tsFormat,
+			Skip:                      logexSkipFrames,
+			EnableSkip:                e,
+			EnvironmentOverrideColors: true,
+		})
+	}
+
+	logrus.SetReportCaller(true)
+
+	if log.GetLevel() == log.OffLevel {
+		logrus.SetLevel(logrus.ErrorLevel)
+	}
+}
