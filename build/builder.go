@@ -9,6 +9,12 @@ import (
 	"github.com/hedzr/logex/logx/zap/sugar"
 )
 
+func init() {
+	savedStdLogger = log.GetLogger()
+}
+
+var savedStdLogger log.Logger
+
 // New creates and returns a Logger instance from LoggerConfig
 func New(config *log.LoggerConfig) log.Logger {
 	l, _ := log.ParseLevel(config.Level)
@@ -25,7 +31,7 @@ func New(config *log.LoggerConfig) log.Logger {
 	case "dummy", "none", "off":
 		logger = log.NewDummyLogger()
 	case "std", "standard":
-		logger = log.NewStdLogger()
+		logger = savedStdLogger // log.NewStdLogger()
 	case "logrus":
 		logger = logrus.NewWithConfig(config)
 	case "sugar":
@@ -51,9 +57,9 @@ func init() {
 	builders["none"] = log.NewDummyLoggerWithConfig
 	builders["off"] = log.NewDummyLoggerWithConfig
 
-	builders["std"] = log.NewStdLoggerWithConfig
-	builders["standard"] = log.NewStdLoggerWithConfig
-	builders["go"] = log.NewStdLoggerWithConfig
+	builders["std"] = NewStdLoggerWithConfig
+	builders["standard"] = NewStdLoggerWithConfig
+	builders["go"] = NewStdLoggerWithConfig
 
 	builders["logrus"] = logrus.NewWithConfigSimple
 	builders["sugar"] = sugar.NewWithConfigSimple
@@ -66,6 +72,14 @@ func NewLoggerConfig() *log.LoggerConfig {
 	//c.DebugMode = log.GetDebugMode()
 	//c.TraceMode = log.GetTraceMode()
 	return c
+}
+
+// NewStdLoggerWithConfig return a stdlib `log` logger
+func NewStdLoggerWithConfig(config *log.LoggerConfig) log.Logger {
+	l, _ := log.ParseLevel(config.Level)
+	// return &stdLogger{Level: l, skip: 1}
+	savedStdLogger.SetLevel(l)
+	return savedStdLogger
 }
 
 // NewLoggerConfigWith returns a default LoggerConfig
