@@ -163,18 +163,17 @@ We must have created the logging output file in it.
 	format := "text" // cmdr.GetStringR("logger.format", "text")
 	s.setupLoggingFormat(format, extraSkip, s.Config.ShortTimestamp, s.Config.TimestampFormat)
 
-	logger := logrus.StandardLogger()
-	s.Logger = logger
+	//s.working = logger.WithField("SKIP", extraSkip)
 	// logger.Infof("hello, logLevel = %q", logLevel)
 	// logrus.Infof("hello, logLevel = %q", logLevel)
-	return logger
+	return s.Logger
 }
 
 const (
 	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
 	defaultShortTimestampFormat = "01-02 15:04:05.999"
 	//defaultShortestTimestampFormat = "15:04:05.999"
-	extraSkip = 1
+	extraSkip = 3
 )
 
 // const extraSkip = 1
@@ -187,6 +186,9 @@ func (s *dzl) setupLoggingFormat(format string, logexSkipFrames int, shortTimest
 		}
 	}
 
+	s.format = format
+	s.tsFormat = tsFormat
+	s.extraFrames = extraSkip
 	switch format {
 	case "json":
 		logrus.SetFormatter(&logrus.JSONFormatter{
@@ -215,4 +217,7 @@ func (s *dzl) setupLoggingFormat(format string, logexSkipFrames int, shortTimest
 	if log.GetLevel() == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
 	}
+
+	s.Logger = logrus.StandardLogger()
+	s.AddSkip(0)
 }
