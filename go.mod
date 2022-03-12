@@ -15,4 +15,10 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
 
-require github.com/BurntSushi/toml v1.0.0 // indirect
+require (
+	github.com/BurntSushi/toml v1.0.0 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
+	gopkg.in/hedzr/errors.v3 v3.0.11 // indirect
+)
