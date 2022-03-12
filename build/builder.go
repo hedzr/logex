@@ -7,6 +7,7 @@ import (
 	"github.com/hedzr/logex/logx/logrus"
 	"github.com/hedzr/logex/logx/zap"
 	"github.com/hedzr/logex/logx/zap/sugar"
+	"github.com/hedzr/logex/logx/zerolog"
 )
 
 func init() {
@@ -64,6 +65,7 @@ func init() {
 	builders["logrus"] = logrus.NewWithConfigSimple
 	builders["sugar"] = sugar.NewWithConfigSimple
 	builders["zap"] = zap.NewWithConfigSimple
+	builders["zerolog"] = zerolog.NewWithConfigSimple
 }
 
 // NewLoggerConfig returns a default LoggerConfig
