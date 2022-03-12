@@ -50,7 +50,7 @@ app:
     #   "disable"/"off", "panic", "fatal", "error", "warn", "info", "debug", "trace"
     level:  info
     format: text                  # text, json, logfmt, ...
-    backend: sugar                # zap, sugar(sugared-zap) or logrus
+    backend: sugar                # zap, sugar(sugared-zap) or logrus, zerolog
     target: file                  # console, file
     directory: /var/log/$APPNAME
 ```
@@ -82,6 +82,9 @@ zap.New(level string, traceMode, debugMode bool, opts ...Opt)
 
 import "github.com/hedzr/logex/logx/zap/sugar"
 sugar.New(level string, traceMode, debugMode bool, opts ...Opt)
+
+import "github.com/hedzr/logex/logx/zerolog"
+zerolog.New(level string, traceMode, debugMode bool, opts ...Opt)
 
 ```
 
@@ -122,18 +125,6 @@ build.New(build.NewLoggerConfigWith(false, "someone", "info"))
 
 
 ### Legacy tools
-
-#### Enable logrus
-
-```go
-import "github.com/hedzr/logex"
-
-func init(){
-    logex.Enable()
-    // Or:
-    logex.EnableWith(logrus.DebugLevel)
-}
-```
 
 
 #### Ignore the extra caller frames
