@@ -104,7 +104,7 @@ func (s *dzl) initLogger() *logrus.Logger {
 	if s.Config.Target == "file" {
 		logrus.SetLevel(logrus.Level(ll))
 
-		logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+		logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true, RelativePath: true})
 		logrus.SetReportCaller(true)
 
 		var file *os.File
@@ -209,6 +209,8 @@ func (s *dzl) setupLoggingFormat(format string, logexSkipFrames int, shortTimest
 			Skip:                      logexSkipFrames,
 			EnableSkip:                e,
 			EnvironmentOverrideColors: true,
+			QuoteEmptyFields:          true,
+			RelativePath:              true,
 		})
 	}
 

@@ -7,8 +7,10 @@ package formatter
 import (
 	"bytes"
 	"fmt"
+	"github.com/hedzr/log/dir"
 	"github.com/sirupsen/logrus"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sort"
 	"strings"
@@ -112,6 +114,10 @@ type TextFormatter struct {
 	EnableSkip bool
 
 	terminalInitOnce sync.Once
+
+	RelativePath bool
+	//HideHomeDir  bool
+	currDir string
 }
 
 func (f *TextFormatter) init(entry *logrus.Entry) {
@@ -122,6 +128,8 @@ func (f *TextFormatter) init(entry *logrus.Entry) {
 			initTerminal(entry.Logger.Out)
 		}
 	}
+
+	f.currDir = dir.GetCurrentDir()
 }
 
 func (f *TextFormatter) isColored() bool {
@@ -342,6 +350,43 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+func sel(ss ...string) (ret string) {
+	for _, s := range ss {
+		if len(s) > 0 {
+			ret = s
+			break
+		}
+	}
+	return
+}
+
+func (f *TextFormatter) stripKnownPrefixes(file string) (ret string) {
+	//ret = file
+
+	//if f.HideHomeDir {
+	//	cd := dir.GetCurrentDir()
+	//	for _, it := range []struct{ find, repl string }{
+	//		{cd, "."},
+	//		{sel(os.Getenv("HOME"), os.Getenv("USERPROFILE")), "~"},
+	//	} {
+	//		if strings.HasPrefix(ret, it.find) {
+	//			//ret = ret[len(p):]
+	//			ret = it.repl + ret[len(it.find):]
+	//			break
+	//		}
+	//	}
+	//}
+
+	ret = file
+	if f.RelativePath {
+		rp, err := filepath.Rel(f.currDir, file)
+		if err == nil {
+			ret = rp
+		}
+	}
+	return
+}
+
 func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys []string, data logrus.Fields, timestampFormat string) {
 	var levelColor int
 	switch entry.Level {
@@ -370,20 +415,23 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 
 	if entry.HasCaller() {
 		funcVal := fmt.Sprintf("\u001B[%dm%s\u001B[0m()", darkGray, entry.Caller.Function)
+		funcVal = strings.ReplaceAll(funcVal, "github.com", "GH")
+		funcVal = strings.ReplaceAll(funcVal, "gitlab.com", "GL")
+		funcVal = strings.ReplaceAll(funcVal, "gitee.com", "GT")
+		funcVal = strings.ReplaceAll(funcVal, "bitbucket.com", "BB")
+
 		var fileVal string // fileVal := fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
-		if f, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
-			fileVal = f.(string)
+		if f1, ok := data[resolve(f.FieldMap, logrus.FieldKeyFile)]; ok && strings.Contains(entry.Caller.File, "logrus.go") {
+			fileVal = f.stripKnownPrefixes(f1.(string))
 			skipFile = true
 		} else {
-			fileVal = fmt.Sprintf("\u001B[%dm%s:%d\u001B[0m", lightBlue, entry.Caller.File, entry.Caller.Line)
+			fileVal = fmt.Sprintf("\u001B[%dm%s:%d\u001B[0m", lightBlue, f.stripKnownPrefixes(entry.Caller.File), entry.Caller.Line)
 		}
 
 		if f.CallerPrettyfier != nil {
 			funcVal, fileVal = f.CallerPrettyfier(entry.Caller)
 		}
 		caller = fileVal + " " + funcVal
-		caller = strings.ReplaceAll(caller, "github.com", "GH")
-		caller = strings.ReplaceAll(caller, "gitlab.com", "GL")
 	}
 
 	if f.DisableTimestamp {
