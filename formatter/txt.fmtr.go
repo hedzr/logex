@@ -277,9 +277,11 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 						data["via"] = fmt.Sprintf("%v", funcVal)
 
 						entryCaller := getCaller(skipFrames)
-						fileVal = fmt.Sprintf("%s:%d", entryCaller.File, entryCaller.Line)
-						// funcVal = entryCaller.Function
-						entry.Caller = entryCaller
+						if entryCaller != nil {
+							fileVal = fmt.Sprintf("%s:%d", entryCaller.File, entryCaller.Line)
+							// funcVal = entryCaller.Function
+							entry.Caller = entryCaller
+						}
 					}
 				}
 				// fmt.Printf("runtime-version: %v, skipFrames: %v. ok: %v, EnableSkip: %v, %v. fb: %v. logexPackage: %v.\n", runtime.Version(), sf, ok, f.EnableSkip, f.Skip, fb, logexPackage)
