@@ -20,6 +20,11 @@ type dzl struct {
 	Config *log.LoggerConfig
 }
 
+func (s *dzl) With(key string, val interface{}) log.Logger {
+	s.working.With(key, val)
+	return s.working
+}
+
 func (s *dzl) AddSkip(increments int) log.Logger {
 	s.skip += increments
 	s.working = &entry{s.Logger.WithField(formatter.SKIP, s.skip), s}

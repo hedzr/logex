@@ -24,6 +24,11 @@ func (s *entry) AddSkip(skip int) log.Logger {
 //
 //
 
+func (s *entry) With(key string, val interface{}) log.Logger {
+	s.Entry = s.Entry.WithField(key, val)
+	return s
+}
+
 func (s *entry) Tracef(msg string, args ...interface{}) {
 	if log.GetTraceMode() {
 		s.Entry.Tracef(msg, args...)

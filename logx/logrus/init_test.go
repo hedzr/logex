@@ -26,4 +26,8 @@ func TestShortTS(t *testing.T) {
 	logger.Errorf("hello error")
 	logger.Debugf("hello debug")
 	logger.Tracef("hello trace")
+
+	// With
+
+	logger.With("A", "aaa").Infof("hello info")
 }

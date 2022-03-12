@@ -170,9 +170,9 @@ We must have created the logging output file in it.
 }
 
 const (
-	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
-	defaultShortTimestampFormat = "01-02 15:04:05.999"
-	//defaultShortestTimestampFormat = "15:04:05.999"
+	defaultTimestampFormat      = "2006-01-02 15:04:05.000000"
+	defaultShortTimestampFormat = "01-02 15:04:05.000000"
+	//defaultShortestTimestampFormat = "15:04:05.000"
 	extraSkip = 3
 )
 

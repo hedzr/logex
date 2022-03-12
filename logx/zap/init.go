@@ -3,6 +3,7 @@ package zap
 import (
 	"fmt"
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/dir"
 	"github.com/hedzr/log/exec"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -10,6 +11,7 @@ import (
 	log2 "log"
 	"os"
 	"path"
+	"path/filepath"
 )
 
 // New create a sugared zap logger
@@ -40,7 +42,7 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 		opt(zl)
 	}
 
-	logger := &dzl{zl, zl.Sugar()}
+	logger := &dzl{zl, zl.Sugar(), nil}
 	logger.Setup()
 	log.SetLogger(logger)
 	return logger
@@ -77,7 +79,7 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 		opt(zl)
 	}
 
-	logger := &dzl{zl, zl.Sugar()}
+	logger := &dzl{zl, zl.Sugar(), nil}
 	logger.Setup()
 	log.SetLogger(logger)
 	return logger
@@ -143,14 +145,29 @@ We must have created the logging output file in it.
 	} else {
 		logCfg := zap.NewDevelopmentConfig()
 		logCfg.Level = zap.NewAtomicLevelAt(level)
-		logCfg.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
+		logCfg.EncoderConfig.EncodeCaller = relCallerEncoder // zapcore.ShortCallerEncoder // FullCallerEncoder
 		logCfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		if config.ShortTimestamp {
+			// RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
+			logCfg.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("15:04:05.999999999")
+		}
 		logCfg.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 		logger, _ := logCfg.Build()
 		return logger.WithOptions(zap.AddCallerSkip(skip)) // .Sugar()
 	}
 
 }
+
+func relCallerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+	c := caller.String()
+	if fil, err := filepath.Rel(curDir, c); err == nil {
+		enc.AppendString(fil)
+	} else {
+		enc.AppendString(c)
+	}
+}
+
+var curDir = dir.GetCurrentDir()
 
 const extraSkip = 1
 
