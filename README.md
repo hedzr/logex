@@ -37,6 +37,8 @@ Since v1.2.0, `logex` allows switching the logging backends (such as logrus, zap
 
 We provide the ability to switch logging backends transparently now.
 
+> The supported backends currently are: logrus, zag, zerolog.
+
 A sample config file looks like:
 
 ```yaml
