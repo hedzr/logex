@@ -116,7 +116,7 @@ type TextFormatter struct {
 	terminalInitOnce sync.Once
 
 	RelativePath bool
-	//HideHomeDir  bool
+	// HideHomeDir  bool
 	currDir string
 }
 
@@ -203,7 +203,12 @@ func getCaller(skipFrames int) *runtime.Frame {
 		pkg := getPackageName(f.Function)
 
 		// If the caller isn't part of this package, we're done
-		if pkg != logrusPackage && pkg != logexPackage && pkg != logPackage {
+		if pkg != "log" && pkg != "fmt" &&
+			!strings.HasPrefix(pkg, logrusPackage) &&
+			!strings.HasPrefix(pkg, logexPackage) &&
+			!strings.HasPrefix(pkg, logPackage) &&
+			!strings.HasSuffix(pkg, "log") &&
+			!strings.HasPrefix(f.Function, ".logf") {
 			if skipped < skipFrames {
 				skipped++
 				continue
@@ -253,7 +258,7 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			} else {
 				var sf interface{}
 				ok, fb := false, false
-				if f.EnableSkip && f.Skip > 0 {
+				if f.EnableSkip && f.Skip >= 0 {
 					sf, ok = f.Skip, true
 					// } else if !f.EnableSkip {
 					//	 sf, ok = 1, true
@@ -264,7 +269,7 @@ func (f *TextFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 					sf, ok = sf.(int)+v.(int), yes
 				}
 				if ok {
-					if skipFrames, ok := sf.(int); ok && skipFrames > 0 {
+					if skipFrames, ok := sf.(int); ok && skipFrames >= 0 {
 						// println("skipFrames: %v", skipFrames)
 						fb = true
 						delete(data, SKIP)
@@ -363,9 +368,9 @@ func sel(ss ...string) (ret string) {
 }
 
 func (f *TextFormatter) stripKnownPrefixes(file string) (ret string) {
-	//ret = file
+	// ret = file
 
-	//if f.HideHomeDir {
+	// if f.HideHomeDir {
 	//	cd := dir.GetCurrentDir()
 	//	for _, it := range []struct{ find, repl string }{
 	//		{cd, "."},
@@ -377,7 +382,7 @@ func (f *TextFormatter) stripKnownPrefixes(file string) (ret string) {
 	//			break
 	//		}
 	//	}
-	//}
+	// }
 
 	ret = file
 	if f.RelativePath {
@@ -440,7 +445,7 @@ func (f *TextFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys 
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m %-48s %s ", levelColor, levelText, entry.Message, caller)
 	} else if !f.FullTimestamp {
 		// echo -e "Normal \e[2mDim"
-		//skipVia = false
+		// skipVia = false
 		_, _ = fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m\x1b[2m \x1b[%dm[%04d]\x1b[0m %-48s \x1b[2m\x1b[%dm%s\x1b[0m ",
 			levelColor, levelText, darkColor, int(entry.Time.Sub(baseTimestamp)/time.Second), entry.Message, darkColor, caller)
 	} else {
