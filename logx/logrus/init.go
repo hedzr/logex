@@ -19,20 +19,20 @@ import (
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)
-	//// ll := cmdr.GetStringR("logger.level", "info")
-	//lvl, _ := log.ParseLevel(level)
-	//if log.GetDebugMode() {
+	// // ll := cmdr.GetStringR("logger.level", "info")
+	// lvl, _ := log.ParseLevel(level)
+	// if log.GetDebugMode() {
 	//	if lvl < log.DebugLevel {
 	//		lvl = log.DebugLevel
 	//		level = "debug"
 	//	}
-	//}
-	//if log.GetTraceMode() {
+	// }
+	// if log.GetTraceMode() {
 	//	if lvl < log.TraceLevel {
 	//		lvl = log.TraceLevel
 	//		level = "trace"
 	//	}
-	//}
+	// }
 
 	config := log.NewLoggerConfig()
 	logger := &dzl{Config: config}
@@ -48,7 +48,7 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	return logger
 }
 
-//const extraSkip = 1
+// const extraSkip = 1
 
 func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithConfig(config) }
 
@@ -70,7 +70,7 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 		}
 	}
 
-	logger := &dzl{Config: config}
+	logger := &dzl{Config: config, split: true}
 
 	logger.initLogger()
 
@@ -85,11 +85,11 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 type Opt func(logger *logrus.Logger)
 
-//func WithLoggingFormat(format string) Opt {
+// func WithLoggingFormat(format string) Opt {
 //	return func(logger *logrus.Logger) {
 //		logex.SetupLoggingFormat(format, extraSkip, false, "")
 //	}
-//}
+// }
 
 func (s *dzl) initLogger() *logrus.Logger {
 	var ll log.Level
@@ -132,7 +132,7 @@ We must have created the logging output file in it.
 		}
 
 		logrus.Warnf("Failed to log to file %q, using default stderr", fPath)
-	} else {
+	} else if s.split {
 		logrus.SetOutput(ioutil.Discard) // Send all logs to nowhere by default
 
 		logrus.AddHook(&writer.Hook{ // Send logs with level higher than warning to stderr
@@ -154,16 +154,16 @@ We must have created the logging output file in it.
 		})
 	}
 
-	//// setupLoggingFormat(format, 0)
-	//logex.EnableWith(ll)
+	// // setupLoggingFormat(format, 0)
+	// logex.EnableWith(ll)
 	//
-	//format := "text" // cmdr.GetStringR("logger.format", "text")
-	//logex.SetupLoggingFormat(format, extraSkip, config.ShortTimestamp, config.TimestampFormat)
+	// format := "text" // cmdr.GetStringR("logger.format", "text")
+	// logex.SetupLoggingFormat(format, extraSkip, config.ShortTimestamp, config.TimestampFormat)
 
 	format := "text" // cmdr.GetStringR("logger.format", "text")
-	s.setupLoggingFormat(format, extraSkip, s.Config.ShortTimestamp, s.Config.TimestampFormat)
+	s.setupLoggingFormat(format, 0, s.Config.ShortTimestamp, s.Config.TimestampFormat)
 
-	//s.working = logger.WithField("SKIP", extraSkip)
+	// s.working = logger.WithField("SKIP", extraSkip)
 	// logger.Infof("hello, logLevel = %q", logLevel)
 	// logrus.Infof("hello, logLevel = %q", logLevel)
 	return s.Logger
@@ -172,8 +172,8 @@ We must have created the logging output file in it.
 const (
 	defaultTimestampFormat      = "2006-01-02 15:04:05.000000"
 	defaultShortTimestampFormat = "01-02 15:04:05.000000"
-	//defaultShortestTimestampFormat = "15:04:05.000"
-	extraSkip = 3
+	// defaultShortestTimestampFormat = "15:04:05.000"
+	extraSkip = 0
 )
 
 // const extraSkip = 1
@@ -198,7 +198,7 @@ func (s *dzl) setupLoggingFormat(format string, logexSkipFrames int, shortTimest
 		})
 	default:
 		e := false
-		if logexSkipFrames > 0 {
+		if logexSkipFrames >= 0 {
 			e = true
 		}
 		logrus.SetFormatter(&formatter.TextFormatter{

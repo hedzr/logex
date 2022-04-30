@@ -13,13 +13,13 @@ import (
 func newZerologWrapper(config *log.LoggerConfig, opts ...Opt) *dzl {
 	s := &dzl{cfg: config, skip: config.ExtraSkip}
 
-	//zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	// zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	lvl, err := zerolog.ParseLevel(config.Level)
 	if err != nil {
 		log.Errorf("cannot parse %q to zerolog.Level", err)
 	}
-	//println("level ", lvl, config.Level)
+	// println("level ", lvl, config.Level)
 	zerolog.SetGlobalLevel(lvl)
 	log.SetLevel(llvl(lvl)) // sync zerolog level to hedzr/log
 
@@ -31,7 +31,7 @@ func newZerologWrapper(config *log.LoggerConfig, opts ...Opt) *dzl {
 	if config.TimestampFormat != "" {
 		out.TimeFormat = config.TimestampFormat
 	} else if !config.ShortTimestamp {
-		//time.RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
+		// time.RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
 		out.TimeFormat = "2006-01-02 15:04:05.000000"
 	} else {
 		out.TimeFormat = "01-02 15:04:05.000000"
@@ -67,9 +67,10 @@ We must have created the logging output file in it.
 		}
 	}
 
-	s.with = zerolog.New(out).With()
+	s.lout = zerolog.MultiLevelWriter(out)
+	s.with = zerolog.New(s.lout).With()
 
-	//s.Logger = s.with.Logger()
+	// s.Logger = s.with.Logger()
 	s.working = s.with
 	return s
 }
@@ -80,20 +81,29 @@ type dzl struct {
 	working zerolog.Context
 	sl      *zerolog.Logger
 	skip    int
+
+	lout zerolog.LevelWriter
 }
 
 func (s *dzl) get() *zerolog.Logger {
-	//if s.sl == nil {
+	// if s.sl == nil {
 	slc := s.working.CallerWithSkipFrameCount(extraSkip + s.skip)
 	var sl zerolog.Logger
 	sl = slc.Timestamp().Logger()
 	s.sl = &sl
-	//}
+	// }
 	return s.sl
 }
 
 func (s *dzl) With(key string, val interface{}) log.Logger {
 	s.working = s.working.Interface(key, val)
+	return s
+}
+
+func (s *dzl) WithFields(fields map[string]interface{}) log.Logger {
+	for key, val := range fields {
+		s.working = s.working.Interface(key, val)
+	}
 	return s
 }
 
@@ -146,7 +156,7 @@ func (s *dzl) Println(args ...interface{}) { s.get().Print(args...) }
 
 func (s *dzl) SetLevel(lvl log.Level) {
 	l := zlvl(lvl)
-	//log.Infof("put lvl %v", l)
+	// log.Infof("put lvl %v", l)
 	zerolog.SetGlobalLevel(l)
 }
 
@@ -198,17 +208,18 @@ func llvl(lvl zerolog.Level) log.Level {
 
 func (s *dzl) GetLevel() log.Level {
 	lvl := zerolog.GlobalLevel()
-	//log.Infof("got lvl = %v", lvl)
+	// log.Infof("got lvl = %v", lvl)
 	return llvl(lvl)
 }
 
 func (s *dzl) SetOutput(out io.Writer) {
-	s.with = zerolog.New(out).With()
+	s.lout = zerolog.MultiLevelWriter(out)
+	s.with = zerolog.New(s.lout).With()
 	s.working = s.with
 }
 
 func (s *dzl) GetOutput() (out io.Writer) {
-	return
+	return s.lout
 }
 
 func (s *dzl) Setup() {

@@ -25,8 +25,13 @@ func (s *entry) AddSkip(skip int) log.Logger {
 //
 
 func (s *entry) With(key string, val interface{}) log.Logger {
-	s.Entry = s.Entry.WithField(key, val)
-	return s
+	e := &entry{s.Entry.WithField(key, val), s.owner}
+	return e
+}
+
+func (s *entry) WithFields(fields map[string]interface{}) log.Logger {
+	e := &entry{s.Entry.WithFields(fields), s.owner}
+	return e
 }
 
 func (s *entry) Tracef(msg string, args ...interface{}) {
@@ -44,38 +49,38 @@ func (s *entry) Infof(msg string, args ...interface{}) {
 }
 
 func (s *entry) Warnf(msg string, args ...interface{}) {
-	//e := s.Entry // .WithContext(context.TODO())
-	//sav := e.Logger.Out
-	//e.Logger.Out = os.Stderr
-	//e.Warnf(msg, args...)
-	//e.Logger.Out = sav
+	// e := s.Entry // .WithContext(context.TODO())
+	// sav := e.Logger.Out
+	// e.Logger.Out = os.Stderr
+	// e.Warnf(msg, args...)
+	// e.Logger.Out = sav
 	s.Entry.Warnf(msg, args...)
 }
 
 func (s *entry) Errorf(msg string, args ...interface{}) {
-	//e := s.Entry // .WithContext(context.TODO())
-	//sav := e.Logger.Out
-	//e.Logger.Out = os.Stderr
-	//e.Errorf(msg, args...)
-	//e.Logger.Out = sav
+	// e := s.Entry // .WithContext(context.TODO())
+	// sav := e.Logger.Out
+	// e.Logger.Out = os.Stderr
+	// e.Errorf(msg, args...)
+	// e.Logger.Out = sav
 	s.Entry.Errorf(msg, args...)
 }
 
 func (s *entry) Fatalf(msg string, args ...interface{}) {
-	//e := s.Entry // .WithContext(context.TODO())
-	//sav := e.Logger.Out
-	//e.Logger.Out = os.Stderr
-	//e.Fatalf(msg, args...)
-	//e.Logger.Out = sav
+	// e := s.Entry // .WithContext(context.TODO())
+	// sav := e.Logger.Out
+	// e.Logger.Out = os.Stderr
+	// e.Fatalf(msg, args...)
+	// e.Logger.Out = sav
 	s.Entry.Fatalf(msg, args...)
 }
 
 func (s *entry) Panicf(msg string, args ...interface{}) {
-	//e := s.Entry // .WithContext(context.TODO())
-	//sav := e.Logger.Out
-	//e.Logger.Out = os.Stderr
-	//e.Panicf(msg, args...)
-	//e.Logger.Out = sav
+	// e := s.Entry // .WithContext(context.TODO())
+	// sav := e.Logger.Out
+	// e.Logger.Out = os.Stderr
+	// e.Panicf(msg, args...)
+	// e.Logger.Out = sav
 	s.Entry.Panicf(msg, args...)
 }
 

@@ -169,7 +169,7 @@ func relCallerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEnco
 
 var curDir = dir.GetCurrentDir()
 
-const extraSkip = 1
+const extraSkip = 2
 
 func initLoggerConsole(logLevel zapcore.Level) *zap.Logger {
 	// alevel := zap.NewAtomicLevel()

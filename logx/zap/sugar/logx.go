@@ -16,6 +16,13 @@ func (s *dzl) With(key string, val interface{}) log.Logger {
 	return s
 }
 
+func (s *dzl) WithFields(fields map[string]interface{}) log.Logger {
+	for key, val := range fields {
+		s.fields = append(s.fields, zap.Any(key, val))
+	}
+	return s
+}
+
 func (s *dzl) AddSkip(skip int) log.Logger {
 	return s
 }
@@ -132,6 +139,13 @@ func (s *dzl) SetOutput(out io.Writer) {
 }
 
 func (s *dzl) GetOutput() (out io.Writer) {
+	out = s
+	return
+}
+
+func (s *dzl) Write(p []byte) (n int, err error) {
+	s.Logger.Info(string(p))
+	n = len(string(p))
 	return
 }
 
