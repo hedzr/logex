@@ -150,8 +150,13 @@ func (s *dzl) SetOutput(out io.Writer) {
 }
 
 func (s *dzl) GetOutput() (out io.Writer) {
-	out = log.GetOutput() // NOTE zap cannot return a writer
+	out = s // NOTE zap cannot return a writer
 	return
+}
+
+func (s *dzl) Write(b []byte) (int, error) {
+	s.Logger.Info(string(b), s.fields...)
+	return 0, nil
 }
 
 func (s *dzl) Setup() {

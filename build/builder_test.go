@@ -12,7 +12,7 @@ func TestNew(t *testing.T) {
 }
 
 func test(t *testing.T, backend string) {
-	t.Logf("For backend %q", backend)
+	t.Logf("For backend %q ---------------------------------------", backend)
 	config := log.NewLoggerConfigWith(true, backend, "trace")
 	logger := New(config)
 	logger.Printf("hello")
