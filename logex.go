@@ -14,13 +14,13 @@ func GetLevel() log.Level {
 	return log.GetLevel()
 }
 
-//// Enable makes logrus logging enabled.
-//// Deprecated it's obsoleted
-//func Enable() {
+// // Enable makes logrus logging enabled.
+// // Deprecated it's obsoleted
+// func Enable() {
 //	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
 //	//logrus.SetReportCaller(true)
 //	//// logrus.AddHook(logex.hook.DefaultContextHook)
-//}
+// }
 
 // EnableWith makes logrus logging enabled.
 // Deprecated it's obsoleted
@@ -28,32 +28,32 @@ func EnableWith(lvl log.Level, opts ...Option) {
 	log.SetLevel(lvl)
 	log.Setup()
 
-	//if lvl == log.OffLevel {
+	// if lvl == log.OffLevel {
 	//	logrus.SetLevel(logrus.ErrorLevel)
 	//	logrus.SetOutput(ioutil.Discard)
-	//} else {
+	// } else {
 	//	logrus.SetLevel(logrus.Level(lvl))
 	//	logrus.SetOutput(os.Stdout)
-	//}
-	//log.SetLevel(lvl)
-	//logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
-	//logrus.SetReportCaller(true)
-	//// logrus.AddHook(logex.hook.DefaultContextHook)
+	// }
+	// log.SetLevel(lvl)
+	// logrus.SetFormatter(&formatter.TextFormatter{ForceColors: true})
+	// logrus.SetReportCaller(true)
+	// // logrus.AddHook(logex.hook.DefaultContextHook)
 
 	for _, opt := range opts {
 		opt()
 	}
 }
 
-//const (
+// const (
 //	defaultTimestampFormat      = "2006-01-02 15:04:05.000"
 //	defaultShortTimestampFormat = "01-02 15:04:05.999"
 //	//defaultShortestTimestampFormat = "15:04:05.999"
-//)
+// )
 
-//// SetupLoggingFormat specify logrus logging configurations.
-//// Deprecated it's obsoleted
-//func SetupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
+// // SetupLoggingFormat specify logrus logging configurations.
+// // Deprecated it's obsoleted
+// func SetupLoggingFormat(format string, logexSkipFrames int, shortTimestamp bool, tsFormat string) {
 //	if tsFormat == "" {
 //		tsFormat = defaultTimestampFormat
 //		if shortTimestamp {
@@ -87,7 +87,7 @@ func EnableWith(lvl log.Level, opts ...Option) {
 //		logrus.SetLevel(logrus.ErrorLevel)
 //		logrus.SetOutput(ioutil.Discard)
 //	}
-//}
+// }
 
 // Option specify option function.
 // Deprecated it's obsoleted

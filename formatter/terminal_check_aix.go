@@ -1,3 +1,4 @@
+//go:build !appengine && !js && !windows && aix
 // +build !appengine,!js,!windows,aix
 
 /*

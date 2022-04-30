@@ -139,6 +139,7 @@ func (s *dzl) SetOutput(out io.Writer) {
 }
 
 func (s *dzl) GetOutput() (out io.Writer) {
+	// out = log.GetOutput() // NOTE zap cannot return a writer
 	out = s
 	return
 }

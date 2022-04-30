@@ -66,6 +66,6 @@ func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 
 type Opt func(logger zerolog.Logger)
 
-//var curDir = dir.GetCurrentDir()
+// var curDir = dir.GetCurrentDir()
 
 const extraSkip = 5

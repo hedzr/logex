@@ -21,20 +21,20 @@ import (
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)
-	//// ll := cmdr.GetStringR("logger.level", "info")
-	//lvl, _ := log.ParseLevel(level)
-	//if log.GetDebugMode() {
+	// // ll := cmdr.GetStringR("logger.level", "info")
+	// lvl, _ := log.ParseLevel(level)
+	// if log.GetDebugMode() {
 	//	if lvl < log.DebugLevel {
 	//		lvl = log.DebugLevel
 	//		level = "debug"
 	//	}
-	//}
-	//if log.GetTraceMode() {
+	// }
+	// if log.GetTraceMode() {
 	//	if lvl < log.TraceLevel {
 	//		lvl = log.TraceLevel
 	//		level = "debug"
 	//	}
-	//}
+	// }
 
 	zl := initLogger(log.NewLoggerConfig())
 
@@ -58,20 +58,20 @@ func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithCo
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	log.SetTraceMode(config.TraceMode)
 	log.SetDebugMode(config.DebugMode)
-	//// ll := cmdr.GetStringR("logger.level", "info")
-	//lvl, _ := log.ParseLevel(config.Level)
-	//if log.GetDebugMode() {
+	// // ll := cmdr.GetStringR("logger.level", "info")
+	// lvl, _ := log.ParseLevel(config.Level)
+	// if log.GetDebugMode() {
 	//	if lvl < log.DebugLevel {
 	//		lvl = log.DebugLevel
 	//		config.Level = "debug"
 	//	}
-	//}
-	//if log.GetTraceMode() {
+	// }
+	// if log.GetTraceMode() {
 	//	if lvl < log.TraceLevel {
 	//		lvl = log.TraceLevel
 	//		config.Level = "debug" // zap hasn't `trace` level
 	//	}
-	//}
+	// }
 
 	zl := initLogger(config)
 

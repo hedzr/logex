@@ -10,7 +10,7 @@ import (
 
 func TestBasic(t *testing.T) {
 
-	//zerolog3.TimeFieldFormat = zerolog3.TimeFormatUnix
+	// zerolog3.TimeFieldFormat = zerolog3.TimeFormatUnix
 
 	log3.Debug().
 		Str("Scale", "833 cents").

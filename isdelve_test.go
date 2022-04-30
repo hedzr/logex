@@ -11,7 +11,7 @@ import (
 func TestEnable(t *testing.T) {
 	defer CaptureLog(t).Release()
 
-	//Enable()
+	// Enable()
 	if GetLevel() != log.InfoLevel {
 		t.Fatal("wrong level")
 	}
@@ -23,8 +23,8 @@ func TestEnable(t *testing.T) {
 
 	t.Logf("cwd: %v", dir.GetCurrentDir())
 
-	//SetupLoggingFormat("json", 1, true, "")
-	//SetupLoggingFormat("text", 1, false, "")
+	// SetupLoggingFormat("json", 1, true, "")
+	// SetupLoggingFormat("text", 1, false, "")
 }
 
 func TestSetupLoggingFormat(t *testing.T) {
@@ -41,7 +41,7 @@ func TestSetupLoggingFormat(t *testing.T) {
 	}
 
 	log.SetLevel(log.OffLevel)
-	//SetupLoggingFormat("any", 1, false, "")
+	// SetupLoggingFormat("any", 1, false, "")
 
 	t.Logf("%v, %v", GetDebugMode(), GetTraceMode())
 	SetDebugMode(true)

@@ -39,7 +39,7 @@ func New(config *log.LoggerConfig) log.Logger {
 		logger = sugar.NewWithConfig(config)
 	default:
 		logger = zap.NewWithConfig(config)
-		//logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
+		// logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
 	}
 	return logger
 }
@@ -71,8 +71,8 @@ func init() {
 // NewLoggerConfig returns a default LoggerConfig
 func NewLoggerConfig() *log.LoggerConfig {
 	c := log.NewLoggerConfig()
-	//c.DebugMode = log.GetDebugMode()
-	//c.TraceMode = log.GetTraceMode()
+	// c.DebugMode = log.GetDebugMode()
+	// c.TraceMode = log.GetTraceMode()
 	return c
 }
 

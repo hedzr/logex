@@ -23,7 +23,7 @@ func newZerologWrapper(config *log.LoggerConfig, opts ...Opt) *dzl {
 	zerolog.SetGlobalLevel(lvl)
 	log.SetLevel(llvl(lvl)) // sync zerolog level to hedzr/log
 
-	var out zerolog.ConsoleWriter = zerolog.NewConsoleWriter()
+	var out = zerolog.NewConsoleWriter()
 	out.Out = os.Stderr
 	if config.Format == "json" {
 		out.NoColor = true
