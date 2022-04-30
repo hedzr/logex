@@ -6,11 +6,13 @@ import (
 	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
+	"sync"
 )
 
 type dzl struct {
 	*logrus.Logger
 
+	rw          sync.RWMutex
 	working     *entry // *logrus.Entry
 	extraFrames int    // tell txtfmtr how many extra-frames should be ignored
 	skip        int    // and further skips
@@ -21,17 +23,33 @@ type dzl struct {
 	Config *log.LoggerConfig
 }
 
+func (s *dzl) w() (w *entry) {
+	s.rw.Lock()
+	defer s.rw.Unlock()
+	w = s.working
+	return w
+}
+
+func (s *dzl) r() (w *entry) {
+	s.rw.RLock()
+	defer s.rw.RUnlock()
+	w = s.working
+	return w
+}
+
 func (s *dzl) With(key string, val interface{}) log.Logger {
-	l := s.working.With(key, val)
+	l := s.r().With(key, val)
 	return l
 }
 
 func (s *dzl) WithFields(fields map[string]interface{}) log.Logger {
-	l := s.working.WithFields(fields)
+	l := s.r().WithFields(fields)
 	return l
 }
 
 func (s *dzl) AddSkip(increments int) log.Logger {
+	s.rw.Lock()
+	defer s.rw.Unlock()
 	s.skip += increments
 	s.working = &entry{s.Logger.WithField(formatter.SKIP, s.skip), s}
 	return s.working
@@ -39,48 +57,48 @@ func (s *dzl) AddSkip(increments int) log.Logger {
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
 	if log.GetTraceMode() {
-		s.working.Tracef(msg, args...)
+		s.r().Tracef(msg, args...)
 	}
 }
 
 func (s *dzl) Debugf(msg string, args ...interface{}) {
-	s.working.Debugf(msg, args...)
+	s.r().Debugf(msg, args...)
 }
 
 func (s *dzl) Infof(msg string, args ...interface{}) {
-	s.working.Infof(msg, args...)
+	s.r().Infof(msg, args...)
 }
 
 func (s *dzl) Warnf(msg string, args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Warnf(msg, args...)
+	s.r().Warnf(msg, args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Errorf(msg string, args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Errorf(msg, args...)
+	s.r().Errorf(msg, args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Fatalf(msg string, args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Fatalf(msg, args...)
+	s.r().Fatalf(msg, args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Panicf(msg string, args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Panicf(msg, args...)
+	s.r().Panicf(msg, args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Printf(msg string, args ...interface{}) {
-	s.working.Infof(msg, args...)
+	s.r().Infof(msg, args...)
 }
 
 //
@@ -88,63 +106,53 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 
 func (s *dzl) Trace(args ...interface{}) {
 	if log.GetTraceMode() {
-		s.working.Trace(args...)
+		s.r().Trace(args...)
 	}
 }
 
 func (s *dzl) Debug(args ...interface{}) {
-	s.working.Debug(args...)
+	s.r().Debug(args...)
 }
 
 func (s *dzl) Info(args ...interface{}) {
-	s.working.Info(args...)
+	s.r().Info(args...)
 }
 
 func (s *dzl) Warn(args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Warn(args...)
+	s.r().Warn(args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Error(args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Error(args...)
+	s.r().Error(args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Fatal(args ...interface{}) {
 	// sav := s.Logger.Out
 	// s.Logger.Out = os.Stderr
-	s.working.Fatal(args...)
+	s.r().Fatal(args...)
 	// s.Logger.Out = sav
 }
 
 func (s *dzl) Print(args ...interface{}) {
-	s.working.Print(args...)
+	s.r().Print(args...)
 }
 
 //
 //
 
-func (s *dzl) SetLevel(lvl log.Level) { s.Logger.SetLevel(logrus.Level(lvl)) }
-func (s *dzl) GetLevel() log.Level    { return log.Level(s.Logger.Level) }
-func (s *dzl) SetOutput(out io.Writer) {
-	s.Logger.Out = out
-}
-func (s *dzl) GetOutput() (out io.Writer) {
-	// if s.split {
-	// 	out = s.Logger.Writer()
-	// } else {
-	// 	out = s.Logger.Out
-	// }
-	out = s
-	return
-}
+func (s *dzl) SetLevel(lvl log.Level)     { s.Logger.SetLevel(logrus.Level(lvl)) }
+func (s *dzl) GetLevel() log.Level        { return log.Level(s.Logger.Level) }
+func (s *dzl) SetOutput(out io.Writer)    { s.Logger.Out = out }
+func (s *dzl) GetOutput() (out io.Writer) { return s }
 
 func (s *dzl) Write(p []byte) (n int, err error) {
-	s.working.AddSkip(0).Infof("%s", string(p))
+	s.r().AddSkip(0).Infof("%s", string(p))
 	n = len(string(p))
 	return
 }
