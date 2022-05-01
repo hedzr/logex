@@ -3,11 +3,11 @@ package logrus
 import (
 	"fmt"
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/dir"
 	"github.com/hedzr/log/exec"
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
-	"io/ioutil"
 	"os"
 	"path"
 )
@@ -96,7 +96,7 @@ func (s *dzl) initLogger() *logrus.Logger {
 	ll, _ = log.ParseLevel(s.Config.Level)
 	if ll == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
-		logrus.SetOutput(ioutil.Discard)
+		logrus.SetOutput(dir.Discard)
 		return logrus.New()
 	}
 
@@ -133,7 +133,7 @@ We must have created the logging output file in it.
 
 		logrus.Warnf("Failed to log to file %q, using default stderr", fPath)
 	} else if s.split {
-		logrus.SetOutput(ioutil.Discard) // Send all logs to nowhere by default
+		logrus.SetOutput(dir.Discard) // Send all logs to nowhere by default
 
 		logrus.AddHook(&writer.Hook{ // Send logs with level higher than warning to stderr
 			Writer: os.Stderr,

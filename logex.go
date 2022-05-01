@@ -30,7 +30,7 @@ func EnableWith(lvl log.Level, opts ...Option) {
 
 	// if lvl == log.OffLevel {
 	//	logrus.SetLevel(logrus.ErrorLevel)
-	//	logrus.SetOutput(ioutil.Discard)
+	//	logrus.SetOutput(dir.Discard)
 	// } else {
 	//	logrus.SetLevel(logrus.Level(lvl))
 	//	logrus.SetOutput(os.Stdout)
@@ -85,7 +85,7 @@ func EnableWith(lvl log.Level, opts ...Option) {
 //	}
 //	if GetLevel() == log.OffLevel {
 //		logrus.SetLevel(logrus.ErrorLevel)
-//		logrus.SetOutput(ioutil.Discard)
+//		logrus.SetOutput(dir.Discard)
 //	}
 // }
 

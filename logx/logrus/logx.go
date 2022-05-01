@@ -2,10 +2,10 @@ package logrus
 
 import (
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/dir"
 	"github.com/hedzr/logex/formatter"
 	"github.com/sirupsen/logrus"
 	"io"
-	"io/ioutil"
 	"sync"
 )
 
@@ -164,7 +164,7 @@ func (s *dzl) Setup() {
 	lvl := s.GetLevel()
 	if lvl == log.OffLevel {
 		logrus.SetLevel(logrus.ErrorLevel)
-		logrus.SetOutput(ioutil.Discard)
+		logrus.SetOutput(dir.Discard)
 	} else {
 		logrus.SetLevel(logrus.Level(lvl))
 		// logrus.SetOutput(os.Stdout)
