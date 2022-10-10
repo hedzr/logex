@@ -7,7 +7,7 @@ go 1.17
 //replace github.com/hedzr/log => ../10.log
 
 require (
-	github.com/hedzr/log v1.5.55
+	github.com/hedzr/log v1.5.56
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3
 	github.com/rs/zerolog v1.26.1
 	github.com/sirupsen/logrus v1.8.1
@@ -23,6 +23,6 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
-	gopkg.in/hedzr/errors.v3 v3.0.21 // indirect
+	gopkg.in/hedzr/errors.v3 v3.0.23 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
