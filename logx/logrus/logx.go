@@ -50,8 +50,8 @@ func (s *dzl) WithFields(fields map[string]interface{}) log.Logger {
 func (s *dzl) AddSkip(increments int) log.Logger {
 	s.rw.Lock()
 	defer s.rw.Unlock()
-	s.skip += increments
-	s.working = &entry{s.Logger.WithField(formatter.SKIP, s.skip), s}
+	skip := s.skip + increments
+	s.working = &entry{s.Logger.WithField(formatter.SKIP, skip), s}
 	return s.working
 }
 
