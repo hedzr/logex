@@ -29,6 +29,12 @@ Since v1.2.0, `logex` allows switching the logging backends (such as logrus, zap
 
 
 
+## History
+
+- v1.5.57
+  - fixed `GetExecutablePath()`.  
+    Old implements might return an invalid path string if a searchable executable is invoking from current directory.
+
 ## Usages
 
 
