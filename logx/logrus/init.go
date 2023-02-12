@@ -2,20 +2,21 @@ package logrus
 
 import (
 	"fmt"
+	"os"
+	"path"
+
+	"github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus/hooks/writer"
+
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
 	"github.com/hedzr/log/exec"
 	"github.com/hedzr/logex/formatter"
-	"github.com/sirupsen/logrus"
-	"github.com/sirupsen/logrus/hooks/writer"
-	"os"
-	"path"
 )
 
 // New create a sugared logrus logger
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
-//
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)

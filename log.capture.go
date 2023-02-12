@@ -5,10 +5,12 @@
 package logex
 
 import (
-	"github.com/hedzr/log"
-	"github.com/sirupsen/logrus"
 	"io"
 	"testing"
+
+	"github.com/sirupsen/logrus"
+
+	"github.com/hedzr/log"
 )
 
 // see also: https://github.com/sirupsen/logrus/issues/834

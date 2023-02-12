@@ -7,8 +7,6 @@ package formatter
 import (
 	"bytes"
 	"fmt"
-	"github.com/hedzr/log/dir"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -16,6 +14,10 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
+
+	"github.com/hedzr/log/dir"
 )
 
 const (

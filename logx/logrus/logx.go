@@ -1,12 +1,14 @@
 package logrus
 
 import (
+	"io"
+	"sync"
+
+	"github.com/sirupsen/logrus"
+
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
 	"github.com/hedzr/logex/formatter"
-	"github.com/sirupsen/logrus"
-	"io"
-	"sync"
 )
 
 type dzl struct {

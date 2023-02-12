@@ -8,10 +8,11 @@
 package formatter
 
 import (
-	sequences "github.com/konsorten/go-windows-terminal-sequences"
 	"io"
 	"os"
 	"syscall"
+
+	sequences "github.com/konsorten/go-windows-terminal-sequences"
 )
 
 func initTerminal(w io.Writer) {

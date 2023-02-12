@@ -1,9 +1,10 @@
 package logex
 
 import (
-	"github.com/hedzr/log/dir"
 	"os"
 	"testing"
+
+	"github.com/hedzr/log/dir"
 )
 
 func TestGetLevel(t *testing.T) {

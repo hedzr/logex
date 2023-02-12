@@ -3,9 +3,10 @@
 package logex
 
 import (
+	"testing"
+
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
-	"testing"
 )
 
 func TestEnable(t *testing.T) {

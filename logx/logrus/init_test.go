@@ -1,9 +1,10 @@
 package logrus_test
 
 import (
+	"testing"
+
 	"github.com/hedzr/log"
 	"github.com/hedzr/logex/logx/logrus"
-	"testing"
 )
 
 func TestNormal(t *testing.T) {

@@ -1,9 +1,11 @@
 package logrus
 
 import (
-	"github.com/hedzr/log"
-	"github.com/sirupsen/logrus"
 	"io"
+
+	"github.com/sirupsen/logrus"
+
+	"github.com/hedzr/log"
 )
 
 type entry struct {
