@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/hedzr/log/dir"
+	"gopkg.in/hedzr/errors.v3"
 )
 
 func TestGetLevel(t *testing.T) {
@@ -16,7 +17,7 @@ func TestGetLevel(t *testing.T) {
 func TestReadWriteFile(t *testing.T) {
 	d, err := dir.TempDir("", "")
 	if err != nil {
-		t.Errorf("TempDir: %v", err)
+		t.Errorf("TempDir: %v", errors.New().WithErrors(err))
 		return
 	}
 
