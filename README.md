@@ -13,7 +13,23 @@
 
 an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attaches the context caller info to the logging output.
 
-Since v1.2.0, `logex` allows switching the logging backends (such as logrus, zap, ...) transparently.
+> Since v1.6.0, `logex` remove the adapters to zap and zerolog.
+> 
+> The original codes moved to `./_excluded/`.
+> 
+> The primary reason is for reducing the target binary size. Those
+> adapters imports the more third-party codes and can't be optimized
+> due its refers are in our adapters.
+> 
+> So the only way to avoid importing the unnecessary libs is, remove
+> them from our logex framework and allow you adapt them back again
+> when you really want them.
+
+> Since v1.5.56, `logex` moved to Go Modules 1.17 and higher, the 
+> lower versions can't be supported.
+
+> Since v1.2.0, `logex` allows switching the logging backends (such
+> as logrus, zap, ...) transparently.
 
 
 
