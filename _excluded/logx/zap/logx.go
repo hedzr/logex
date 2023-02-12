@@ -2,9 +2,11 @@ package zap
 
 import (
 	"fmt"
-	"github.com/hedzr/log"
-	"go.uber.org/zap"
 	"io"
+
+	"go.uber.org/zap"
+
+	"github.com/hedzr/log"
 )
 
 type dzl struct {

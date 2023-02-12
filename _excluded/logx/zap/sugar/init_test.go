@@ -1,9 +1,10 @@
 package sugar_test
 
 import (
-	"github.com/hedzr/log"
-	"github.com/hedzr/logex/logx/zap/sugar"
 	"testing"
+
+	"github.com/hedzr/log"
+	"github.com/hedzr/logex/_excluded/logx/zap/sugar"
 )
 
 func TestNormal(t *testing.T) {

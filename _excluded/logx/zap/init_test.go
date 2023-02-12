@@ -1,9 +1,10 @@
 package zap_test
 
 import (
-	"github.com/hedzr/log"
-	"github.com/hedzr/logex/logx/zap"
 	"testing"
+
+	"github.com/hedzr/log"
+	"github.com/hedzr/logex/_excluded/logx/zap"
 )
 
 func TestNormal(t *testing.T) {
