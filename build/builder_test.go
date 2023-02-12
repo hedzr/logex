@@ -1,8 +1,9 @@
 package build
 
 import (
-	"github.com/hedzr/log"
 	"testing"
+
+	"github.com/hedzr/log"
 )
 
 func TestNew(t *testing.T) {

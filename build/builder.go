@@ -5,9 +5,6 @@ package build
 import (
 	"github.com/hedzr/log"
 	"github.com/hedzr/logex/logx/logrus"
-	"github.com/hedzr/logex/logx/zap"
-	"github.com/hedzr/logex/logx/zap/sugar"
-	"github.com/hedzr/logex/logx/zerolog"
 )
 
 func init() {
@@ -33,13 +30,18 @@ func New(config *log.LoggerConfig) log.Logger {
 		logger = log.NewDummyLogger()
 	case "std", "standard":
 		logger = savedStdLogger // log.NewStdLogger()
-	case "logrus":
-		logger = logrus.NewWithConfig(config)
-	case "sugar":
-		logger = sugar.NewWithConfig(config)
+	// case "logrus":
 	default:
-		logger = zap.NewWithConfig(config)
-		// logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
+		logger = logrus.NewWithConfig(config)
+		// case "zero","zerolog:
+		// 	logger = zerolog.NewWithConfig(config)
+		// case "zap":
+		// 	logger = zap.NewWithConfig(config)
+		// case "sugar":
+		// 	logger = sugar.NewWithConfig(config)
+		// default:
+		// 	logger = zap.NewWithConfig(config)
+		// 	// logger = zap.New(config.Level, config.TraceMode, config.DebugMode)
 	}
 	return logger
 }
@@ -63,9 +65,10 @@ func init() {
 	builders["go"] = NewStdLoggerWithConfig
 
 	builders["logrus"] = logrus.NewWithConfigSimple
-	builders["sugar"] = sugar.NewWithConfigSimple
-	builders["zap"] = zap.NewWithConfigSimple
-	builders["zerolog"] = zerolog.NewWithConfigSimple
+	// builders["sugar"] = sugar.NewWithConfigSimple
+	// builders["zap"] = zap.NewWithConfigSimple
+	// builders["zerolog"] = zerolog.NewWithConfigSimple
+	// builders["zero"] = zerolog.NewWithConfigSimple
 }
 
 // NewLoggerConfig returns a default LoggerConfig
