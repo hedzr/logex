@@ -1,14 +1,14 @@
 package zerolog
 
 import (
-	"github.com/hedzr/log"
 	"github.com/rs/zerolog"
+
+	"github.com/hedzr/log"
 )
 
 // New create a sugared zap logger
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
-//
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 	log.SetTraceMode(traceMode)
 	log.SetDebugMode(debugMode)
@@ -39,7 +39,6 @@ func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithCo
 // NewWithConfig create a sugared zap sugared logger
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
-//
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
 	log.SetTraceMode(config.TraceMode)
 	log.SetDebugMode(config.DebugMode)

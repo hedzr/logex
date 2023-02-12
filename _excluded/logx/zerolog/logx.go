@@ -2,12 +2,14 @@ package zerolog
 
 import (
 	"fmt"
-	"github.com/hedzr/log"
-	"github.com/hedzr/log/exec"
-	"github.com/rs/zerolog"
 	"io"
 	"os"
 	"path"
+
+	"github.com/rs/zerolog"
+
+	"github.com/hedzr/log"
+	"github.com/hedzr/log/exec"
 )
 
 func newZerologWrapper(config *log.LoggerConfig, opts ...Opt) *dzl {

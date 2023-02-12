@@ -1,9 +1,10 @@
 package zerolog_test
 
 import (
-	"github.com/hedzr/log"
-	"github.com/hedzr/logex/logx/zerolog"
 	"testing"
+
+	"github.com/hedzr/log"
+	"github.com/hedzr/logex/_excluded/logx/zerolog"
 
 	log3 "github.com/rs/zerolog/log"
 )
