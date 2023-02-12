@@ -15,6 +15,8 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 > Since v1.6.0, `logex` remove the adapters to zap and zerolog.
 > 
+> The only shipped adapter is logrus.
+> 
 > The original codes moved to `./_excluded/`.
 > 
 > The primary reason is for reducing the target binary size. Those
@@ -46,6 +48,10 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 
 ## History
+
+- v1.6.0
+  - upgrade erors.v3 to compliant with go1.20+.
+  - BREAK: removed adapters to zap and zerolog to reduce binary size
 
 - v1.5.57
   - fixed `GetExecutablePath()`.  
