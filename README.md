@@ -14,15 +14,15 @@
 an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attaches the context caller info to the logging output.
 
 > Since v1.6.0, `logex` remove the adapters to zap and zerolog.
-> 
+>
 > The only shipped adapter is logrus.
-> 
+>
 > The original codes moved to `./_excluded/`.
-> 
+>
 > The primary reason is for reducing the target binary size. Those
 > adapters imports the more third-party codes and can't be optimized
 > due its refers are in our adapters.
-> 
+>
 > So the only way to avoid importing the unnecessary libs is, remove
 > them from our logex framework and allow you adapt them back again
 > when you really want them.
@@ -33,11 +33,7 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 > Since v1.2.0, `logex` allows switching the logging backends (such
 > as logrus, zap, ...) transparently.
 
-
-
 ![image-20200927083958978](https://i.loli.net/2020/09/27/LYlAcGUOa3CIeR7.png)
-
-
 
 ## Features
 
@@ -49,8 +45,11 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
+- v1.6.1
+  - upgrade `hedzr/log` to support: pass nil to `log.Fatal/Panic` will safely return to caller.
+
 - v1.6.0
-  - upgrade erors.v3 to compliant with go1.20+.
+  - upgrade errors.v3 to compliant with go1.20+.
   - BREAK: removed adapters to zap and zerolog to reduce binary size
 
 - v1.5.57
