@@ -7,13 +7,12 @@
 [![go.dev](https://img.shields.io/badge/go.dev-reference-green)](https://pkg.go.dev/github.com/hedzr/logex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hedzr/logex)](https://goreportcard.com/report/github.com/hedzr/logex)
 [![Coverage Status](https://coveralls.io/repos/github/hedzr/logex/badge.svg?branch=master)](https://coveralls.io/github/hedzr/logex?branch=master) <!--
- [![codecov](https://codecov.io/gh/hedzr/logex/branch/master/graph/badge.svg)](https://codecov.io/gh/hedzr/logex) --> 
+ [![codecov](https://codecov.io/gh/hedzr/logex/branch/master/graph/badge.svg)](https://codecov.io/gh/hedzr/logex) -->
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_shield)
-
 
 an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attaches the context caller info to the logging output.
 
-> Since v1.6.0, `logex` remove the adapters to zap and zerolog.
+> **Since v1.6.0**, `logex` remove the adapters to zap and zerolog.
 >
 > The only shipped adapter is logrus.
 >
@@ -26,11 +25,11 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 > So the only way to avoid importing the unnecessary libs is, remove
 > them from our logex framework and allow you adapt them back again
 > when you really want them.
-
-> Since v1.5.56, `logex` moved to Go Modules 1.17 and higher, the 
+>
+> **Since v1.5.56**, `logex` moved to Go Modules 1.17 and higher, the
 > lower versions can't be supported.
-
-> Since v1.2.0, `logex` allows switching the logging backends (such
+>
+> **Since v1.2.0**, `logex` allows switching the logging backends (such
 > as logrus, zap, ...) transparently.
 
 ![image-20200927083958978](https://i.loli.net/2020/09/27/LYlAcGUOa3CIeR7.png)
@@ -39,11 +38,12 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 - Pre-setup logging backends with clickable caller info: logrus or zap
 - Generic logging interface to cover the various logging backends via: [`log.Logger`](https://github.com/hedzr/log/blob/master/logger.go#L10), [`build.New(config)`](https://github.com/hedzr/logex/blob/master/build/builder.go#L14)
-  - allow registering custom logging backend by [build.RegisterBuilder(backendName, log.BuilderFunc) ` ](https://github.com/hedzr/logex/blob/master/build/builder.go#L43).
-
-
+  - allow registering custom logging backend by [build.RegisterBuilder(backendName, log.BuilderFunc) `](https://github.com/hedzr/logex/blob/master/build/builder.go#L43).
 
 ## History
+
+- v1.6.3
+  - better error format
 
 - v1.6.1
   - upgrade `hedzr/log` to support: pass nil to `log.Fatal/Panic` will safely return to caller.
@@ -57,8 +57,6 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
     Old implements might return an invalid path string if a searchable executable is invoking from current directory.
 
 ## Usages
-
-
 
 ### Build logger transparently
 
@@ -127,13 +125,9 @@ logger := build.New(config)
 logger.Debugf("int value = %v", intVal)
 ```
 
-
-
 That's all stocked.
 
-
-
-### Integrating your backend:
+### Integrating your backend
 
 You can wrap a logging backend with `log.Logger` and register it into logex/build. Why we should do it like this? A universal logger creating interface from logex/build will simplify the application initiliazing coding, esp. in a framework.
 
@@ -143,7 +137,7 @@ import "github.com/hedzr/logex/build"
 build.RegisterBuilder("someone", createSomeLogger)
 
 func createSomeLogger(config *log.LoggerConfig) log.Logger {
-	//... wrapping your logging backend to log.Logger
+ //... wrapping your logging backend to log.Logger
 }
 
 // and use it:
@@ -151,10 +145,7 @@ build.New(build.NewLoggerConfigWith(true, "someone", "debug"))
 build.New(build.NewLoggerConfigWith(false, "someone", "info"))
 ```
 
-
-
 ### Legacy tools
-
 
 #### Ignore the extra caller frames
 
@@ -178,10 +169,6 @@ func wrongwrong(err error, fmt string, args interface{}) {
 }
 ```
 
-
-
-
-
 ## For `go test`
 
 ## make `logrus` works in `go test`
@@ -199,13 +186,8 @@ And in a test function, you could code now:
    }
 ```
 
-
-
-
-
 ## LICENSE
 
 MIT
-
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhedzr%2Flogex.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhedzr%2Flogex?ref=badge_large)
