@@ -42,6 +42,10 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
+- v1.6.5
+  - better output with error format
+  - upgrade deps 
+
 - v1.6.3
   - better error format
 
