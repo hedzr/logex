@@ -42,9 +42,25 @@ func (tl logCapturer) Release() {
 	log.SetOutput(tl.origOut)
 }
 
+// CaptureLogOld redirects logrus output to testing.Log
+func CaptureLogOld(tb testing.TB) LogCapturer {
+	lc := logCapturer{TB: tb, origOut: logrus.StandardLogger().Out}
+	if !testing.Verbose() {
+		log.SetOutput(lc)
+	}
+	return &lc
+}
+
 // CaptureLog redirects logrus output to testing.Log
 func CaptureLog(tb testing.TB) LogCapturer {
-	lc := logCapturer{TB: tb, origOut: logrus.StandardLogger().Out}
+	lc := logCapturer{TB: tb, origOut: log.GetOutput()}
+	log.SetOutput(lc)
+	return &lc
+}
+
+// CaptureLog redirects logrus output to testing.Log
+func CaptureLogV(tb testing.TB) LogCapturer {
+	lc := logCapturer{TB: tb, origOut: log.GetOutput()}
 	if !testing.Verbose() {
 		log.SetOutput(lc)
 	}
