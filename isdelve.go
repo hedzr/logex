@@ -2,19 +2,17 @@
 
 package logex
 
-import "github.com/hedzr/log"
-
-// InDebugging check if the delve debugger presents
-func InDebugging() bool { return log.InDebugging() }
-
-// GetDebugMode return the debug boolean flag generally
-func GetDebugMode() bool { return log.GetDebugMode() }
-
-// GetTraceMode return the trace boolean flag generally
-func GetTraceMode() bool { return log.GetTraceMode() }
-
-// SetDebugMode set the debug boolean flag generally
-func SetDebugMode(b bool) { log.SetDebugMode(b) }
-
-// SetTraceMode set the trace boolean flag generally
-func SetTraceMode(b bool) { log.SetTraceMode(b) }
+// // InDebugging check if the delve debugger presents
+// func InDebugging() bool { return states.Env().InDebugging() }
+//
+// // GetDebugMode return the debug boolean flag generally
+// func GetDebugMode() bool { return states.Env().GetDebugMode() }
+//
+// // GetTraceMode return the trace boolean flag generally
+// func GetTraceMode() bool { return states.Env().GetTraceMode() }
+//
+// // SetDebugMode set the debug boolean flag generally
+// func SetDebugMode(b bool) { states.Env().SetDebugMode(b) }
+//
+// // SetTraceMode set the trace boolean flag generally
+// func SetTraceMode(b bool) { states.Env().SetTraceMode(b) }

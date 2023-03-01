@@ -7,6 +7,7 @@ import (
 
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
+	"github.com/hedzr/log/states"
 )
 
 func TestEnable(t *testing.T) {
@@ -44,8 +45,8 @@ func TestSetupLoggingFormat(t *testing.T) {
 	log.SetLevel(log.OffLevel)
 	// SetupLoggingFormat("any", 1, false, "")
 
-	t.Logf("%v, %v", GetDebugMode(), GetTraceMode())
-	SetDebugMode(true)
-	SetTraceMode(true)
-	t.Logf("%v, %v, %v", GetDebugMode(), GetTraceMode(), InDebugging())
+	t.Logf("%v, %v", states.Env().GetDebugMode(), states.Env().GetTraceMode())
+	states.Env().SetDebugMode(true)
+	states.Env().SetTraceMode(true)
+	t.Logf("%v, %v, %v", states.Env().GetDebugMode(), states.Env().GetTraceMode(), states.Env().InDebugging())
 }

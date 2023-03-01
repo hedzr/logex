@@ -5,13 +5,14 @@ import (
 	"testing"
 
 	"github.com/hedzr/log/dir"
+	"github.com/hedzr/log/states"
 	"gopkg.in/hedzr/errors.v3"
 )
 
 func TestGetLevel(t *testing.T) {
 	t.Logf("level = %v", GetLevel())
-	t.Logf("debug = %v", GetDebugMode())
-	t.Logf("trace = %v", GetTraceMode())
+	t.Logf("debug = %v", states.Env().GetDebugMode())
+	t.Logf("trace = %v", states.Env().GetTraceMode())
 }
 
 func TestReadWriteFile(t *testing.T) {
