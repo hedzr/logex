@@ -8,6 +8,7 @@ import (
 
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
+	"github.com/hedzr/log/states"
 	"github.com/hedzr/logex/formatter"
 )
 
@@ -58,7 +59,7 @@ func (s *dzl) AddSkip(increments int) log.Logger {
 }
 
 func (s *dzl) Tracef(msg string, args ...interface{}) {
-	if log.GetTraceMode() {
+	if states.Env().GetTraceMode() {
 		s.r().Tracef(msg, args...)
 	}
 }
@@ -107,7 +108,7 @@ func (s *dzl) Printf(msg string, args ...interface{}) {
 //
 
 func (s *dzl) Trace(args ...interface{}) {
-	if log.GetTraceMode() {
+	if states.Env().GetTraceMode() {
 		s.r().Trace(args...)
 	}
 }

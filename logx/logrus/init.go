@@ -10,7 +10,7 @@ import (
 
 	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
-	"github.com/hedzr/log/exec"
+	"github.com/hedzr/log/states"
 	"github.com/hedzr/logex/formatter"
 )
 
@@ -18,8 +18,8 @@ import (
 //
 // level can be: "disable", "panic", "fatal", "error", "warn", "info", "debug", "trace"
 func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
-	log.SetTraceMode(traceMode)
-	log.SetDebugMode(debugMode)
+	states.Env().SetTraceMode(traceMode)
+	states.Env().SetDebugMode(debugMode)
 	// // ll := cmdr.GetStringR("logger.level", "info")
 	// lvl, _ := log.ParseLevel(level)
 	// if log.GetDebugMode() {
@@ -54,17 +54,17 @@ func New(level string, traceMode, debugMode bool, opts ...Opt) log.Logger {
 func NewWithConfigSimple(config *log.LoggerConfig) log.Logger { return NewWithConfig(config) }
 
 func NewWithConfig(config *log.LoggerConfig, opts ...Opt) log.Logger {
-	log.SetTraceMode(config.TraceMode)
-	log.SetDebugMode(config.DebugMode)
+	states.Env().SetTraceMode(config.TraceMode)
+	states.Env().SetDebugMode(config.DebugMode)
 	// ll := cmdr.GetStringR("logger.level", "info")
 	lvl, _ := log.ParseLevel(config.Level)
-	if log.GetDebugMode() {
+	if states.Env().GetDebugMode() {
 		if lvl < log.DebugLevel {
 			lvl = log.DebugLevel
 			config.Level = "debug"
 		}
 	}
-	if log.GetTraceMode() {
+	if states.Env().GetTraceMode() {
 		if lvl < log.TraceLevel {
 			lvl = log.TraceLevel
 			config.Level = "trace"
@@ -111,7 +111,7 @@ func (s *dzl) initLogger() *logrus.Logger {
 		var file *os.File
 		fPath := path.Join(os.ExpandEnv(s.Config.Directory), "output.log")
 		fDir := path.Dir(fPath)
-		err = exec.EnsureDir(fDir)
+		err = dir.EnsureDir(fDir)
 		if err != nil {
 			fmt.Printf(`
 
@@ -122,7 +122,7 @@ You're been prompt with a "sudo" requesting because this folder was been creatin
 We must have created the logging output file in it.
 
 `, fDir)
-			err = exec.EnsureDirEnh(fDir)
+			err = dir.EnsureDirEnh(fDir)
 		}
 
 		if err == nil {

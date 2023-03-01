@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/hedzr/log"
+	"github.com/hedzr/log/states"
 )
 
 type entry struct {
@@ -37,7 +38,7 @@ func (s *entry) WithFields(fields map[string]interface{}) log.Logger {
 }
 
 func (s *entry) Tracef(msg string, args ...interface{}) {
-	if log.GetTraceMode() {
+	if states.Env().GetTraceMode() {
 		s.Entry.Tracef(msg, args...)
 	}
 }
