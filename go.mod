@@ -7,7 +7,7 @@ go 1.17
 //replace github.com/hedzr/log => ../10.log
 
 require (
-	github.com/hedzr/log v1.6.7
+	github.com/hedzr/log v1.6.9
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/crypto v0.6.0
