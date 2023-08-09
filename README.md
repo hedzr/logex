@@ -42,8 +42,11 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
-- v1.6.17
-  - update `hedzr/log`
+- v1.6.18
+  - upgraded `hedzr/log`, `hedzr/errors.v3`
+
+- v1.6.18
+  - upgraded `hedzr/log`
 
 - v1.6.15
   - unify detectors api entry to `detects` pkg, user can ignore `buildtags` and `states` in readonly accessing.
