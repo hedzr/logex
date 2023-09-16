@@ -42,10 +42,13 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
+- v1.6.19
+  - upgraded deps
+
 - v1.6.18
   - upgraded `hedzr/log`, `hedzr/errors.v3`
 
-- v1.6.18
+- v1.6.17
   - upgraded `hedzr/log`
 
 - v1.6.15
