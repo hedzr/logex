@@ -42,6 +42,12 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
+- v1.6.23
+  - upgraded deps
+
+- v1.6.21
+  - upgraded deps
+
 - v1.6.19
   - upgraded deps
 

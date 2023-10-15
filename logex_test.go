@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/hedzr/log"
 	"github.com/hedzr/log/dir"
 	"github.com/hedzr/log/states"
 	"gopkg.in/hedzr/errors.v3"
@@ -68,4 +69,8 @@ func TestReadWriteFile(t *testing.T) {
 	if string(b) != `okok` {
 		t.Fatalf("read file content not ok")
 	}
+}
+
+func TestLog1(t *testing.T) {
+	log.Warn(1, 2, 3)
 }
