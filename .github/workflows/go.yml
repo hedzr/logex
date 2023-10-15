@@ -37,6 +37,10 @@ jobs:
             ${{ runner.os }}-go-
       - name: Test
         run: |
+          echo "Available OSes are:"
+          go tool dist list|awk -F'/' '{print $1}'|sort -u
+          echo
+          echo
           for GOOS in $(go tool dist list|awk -F'/' '{print $1}'|sort -u); do
             echo -e "\n\nTESTING FOR $GOOS ...\n"
             go mod tidy
@@ -64,7 +68,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Test & Coverage
-        run: go test -v -coverprofile=profile.cov ./...
+        run: |
+          go mod tidy
+          go test -v -coverprofile=profile.cov ./...
       - name: Send coverage
         uses: shogo82148/actions-goveralls@v1
         with:
