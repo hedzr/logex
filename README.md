@@ -1,5 +1,7 @@
 # logex
 
+**[TO BE ARCHIVED]**
+
 ![Go](https://github.com/hedzr/logex/workflows/Go/badge.svg)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/hedzr/logex.svg?label=release)](https://github.com/hedzr/logex/releases)
 [![Sourcegraph](https://sourcegraph.com/github.com/hedzr/logex/-/badge.svg)](https://sourcegraph.com/github.com/hedzr/logex?badge)
@@ -41,6 +43,9 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
   - allow registering custom logging backend by [build.RegisterBuilder(backendName, log.BuilderFunc) `](https://github.com/hedzr/logex/blob/master/build/builder.go#L43).
 
 ## History
+
+- v1.6.25
+  - upgrade deps
 
 - v1.6.23
   - upgraded deps
