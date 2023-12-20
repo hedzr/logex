@@ -44,6 +44,9 @@ an enhancement for [logrus](https://github.com/sirupsen/logrus). `logex` attache
 
 ## History
 
+- v1.6.26
+  - security patch: upgrade golang.org/x/crypto to 0.17.0
+
 - v1.6.25
   - upgrade deps
 
