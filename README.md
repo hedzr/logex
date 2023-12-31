@@ -1,6 +1,7 @@
 # logex
 
-**[TO BE ARCHIVED]**
+**ARCHIVED** : see [hedzr/is](https://github.com/hedzr/is) and [hedzr/logg](https:///github.com/hedzr/logg).
+
 
 ![Go](https://github.com/hedzr/logex/workflows/Go/badge.svg)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/hedzr/logex.svg?label=release)](https://github.com/hedzr/logex/releases)
